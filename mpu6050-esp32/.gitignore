@@ -15,3 +15,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Doxygen output
+docs/html/
+docs/latex/

@@ -1,0 +1,40 @@
+# Doxygen configuration for MPU6050 ESP32 project
+
+PROJECT_NAME           = "mpu6050-esp32"
+PROJECT_BRIEF          = "Firmware example for MPU6050 on ESP32"
+PROJECT_NUMBER         = "0.1.0"
+OUTPUT_DIRECTORY       = docs
+CREATE_SUBDIRS         = NO
+
+# Input
+INPUT                  = src include WIRE_CHEAT_SHEET.md
+FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.md
+RECURSIVE              = YES
+EXCLUDE                = .pio .platformio .vscode
+
+# Parsing
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+MARKDOWN_SUPPORT       = YES
+JAVADOC_AUTOBRIEF      = YES
+MULTILINE_CPP_IS_BRIEF = YES
+
+# Output style
+FULL_PATH_NAMES        = NO
+STRIP_FROM_PATH        = .
+INLINE_SOURCES         = NO
+SOURCE_BROWSER         = YES
+
+# Build output
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+
+# Warnings
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES
+
+# Graphs
+HAVE_DOT               = NO

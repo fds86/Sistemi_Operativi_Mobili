@@ -1,41 +1,54 @@
-// MPU-6050 Short Example Sketch
-//www.elegoo.com
-//2016.12.9
-
-#include <Arduino.h>
-#include<Wire.h>
-const uint8_t MPU_addr=0x68;  // I2C address of the MPU-6050
+#include "mpu6050_utils.h"
 
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+Mpu6050 mpu;
 
-void setup(){
-  Wire.begin(21,22);
-  Wire.beginTransmission(MPU_addr);
-  Wire.write(0x6B);  // PWR_MGMT_1 register
-  Wire.write(0);     // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
-  Serial.begin(9600);
+/* Setup function */
+void setup() 
+{
+    Serial.begin(9600);
+    initMPU(&mpu); 
+    setAccelRange(&mpu, ACCEL_2G);
+    setGyroRange(&mpu, GYRO_250DPS);
 }
 
-void loop(){
-  Wire.beginTransmission(MPU_addr);
-  Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
-  Wire.endTransmission(false);
-  Wire.requestFrom((uint8_t)MPU_addr, (size_t)14, (bool)true);  // request a total of 14 registers
-  AcX=Wire.read()<<8|Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)    
-  AcY=Wire.read()<<8|Wire.read();  // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
-  AcZ=Wire.read()<<8|Wire.read();  // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
-  Tmp=Wire.read()<<8|Wire.read();  // 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L)
-  GyX=Wire.read()<<8|Wire.read();  // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
-  GyY=Wire.read()<<8|Wire.read();  // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
-  GyZ=Wire.read()<<8|Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-  Serial.print("AcX = "); Serial.print(AcX);
-  Serial.print(" | AcY = "); Serial.print(AcY);
-  Serial.print(" | AcZ = "); Serial.print(AcZ);
-  Serial.print(" | Tmp = "); Serial.print(Tmp/340.00+36.53);  //From the datasheet of MPU6050, we can know the temperature formula
-  Serial.print(" | GyX = "); Serial.print(GyX);
-  Serial.print(" | GyY = "); Serial.print(GyY);
-  Serial.print(" | GyZ = "); Serial.println(GyZ);
-  
-  delay(500);
+/* Main loop */
+void loop()
+{
+    /* Read raw data from MPU6050 */
+    Wire.beginTransmission(mpu.i2c_addr);
+    Wire.write(0x3B);  /* starting with register 0x3B (ACCEL_XOUT_H) */
+    Wire.endTransmission(false);
+
+    /* Request 14 registers starting from 0x3B (ACCEL_XOUT_H) */
+    Wire.requestFrom((uint8_t)mpu.i2c_addr, (size_t)14, (bool)true);  /* Request a total of 14 registers */
+    AcX = read16bit();  /* 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L) */
+    AcY = read16bit();  /* 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L) */
+    AcZ = read16bit();  /* 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L) */
+    Tmp = read16bit();  /* 0x41 (TEMP_OUT_H) & 0x42 (TEMP_OUT_L) */
+    GyX = read16bit();  /* 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L) */
+    GyY = read16bit();  /* 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L) */
+    GyZ = read16bit();  /* 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L) */
+
+    /* Accelerometer values */
+    Serial.print(" | AcX = "); 
+    Serial.print(accelRawToG(&mpu, AcX));
+    Serial.print(" | AcY = "); 
+    Serial.print(accelRawToG(&mpu, AcY));
+    Serial.print(" | AcZ = "); 
+    
+    /* Gyroscope values */
+    Serial.print(accelRawToG(&mpu, AcZ));
+    Serial.print(" | GyX = "); 
+    Serial.print(gyroRawToDPS(&mpu, GyX));
+    Serial.print(" | GyY = "); 
+    Serial.print(gyroRawToDPS(&mpu, GyY));
+    Serial.print(" | GyZ = "); 
+    Serial.print(gyroRawToDPS(&mpu, GyZ));
+    
+    /* Temperature value */
+    Serial.print(" | Tmp = "); 
+    Serial.println(Tmp/340.00+36.53);  /* Temperature formula from the datasheet of MPU6050 */
+
+    delay(500);
 }
