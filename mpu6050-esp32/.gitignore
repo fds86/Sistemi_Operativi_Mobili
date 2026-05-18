@@ -1,0 +1,21 @@
+# PlatformIO
+.platformio/
+.pio/
+build/
+
+# VS Code (locale)
+.vscode/launch.json
+.vscode/extensions.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+*.swp
+*.swo
+*~
+
+# Doxygen output
+docs/html/
+docs/latex/
