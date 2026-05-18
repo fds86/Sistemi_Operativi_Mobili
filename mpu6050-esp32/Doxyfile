@@ -3,11 +3,11 @@
 PROJECT_NAME           = "mpu6050-esp32"
 PROJECT_BRIEF          = "Firmware example for MPU6050 on ESP32"
 PROJECT_NUMBER         = "0.1.0"
-OUTPUT_DIRECTORY       = docs
+OUTPUT_DIRECTORY       = docs/doxygen
 CREATE_SUBDIRS         = NO
 
 # Input
-INPUT                  = src include WIRE_CHEAT_SHEET.md
+INPUT                  = src include docs/wire_library_cheat_sheet.md
 FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.md
 RECURSIVE              = YES
 EXCLUDE                = .pio .platformio .vscode
@@ -35,6 +35,8 @@ GENERATE_XML           = NO
 WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = NO
 WARN_IF_DOC_ERROR      = YES
+WARN_AS_ERROR          = YES
+WARN_LOGFILE           = docs/doxygen/doxygen_warnings.log
 
 # Graphs
 HAVE_DOT               = NO

@@ -1,9 +1,16 @@
 #include "mpu6050_utils.h"
 
-int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+/**
+ * @file main.cpp
+ * @brief ESP32 firmware example for acquiring MPU6050 data over I2C.
+ */
+
+int16_t AcX,AcY,AcZ,GyX,GyY,GyZ,Tmp; /**< Raw sensor data */
 Mpu6050 mpu;
 
-/* Setup function */
+/**
+ * @brief Initialize serial output and configure the MPU6050 sensor.
+ */
 void setup() 
 {
     Serial.begin(9600);
@@ -12,7 +19,9 @@ void setup()
     setGyroRange(&mpu, GYRO_250DPS);
 }
 
-/* Main loop */
+/**
+ * @brief Read sensor values and print acceleration, gyroscope, and temperature.
+ */
 void loop()
 {
     /* Read raw data from MPU6050 */
@@ -36,9 +45,9 @@ void loop()
     Serial.print(" | AcY = "); 
     Serial.print(accelRawToG(&mpu, AcY));
     Serial.print(" | AcZ = "); 
+    Serial.print(accelRawToG(&mpu, AcZ));
     
     /* Gyroscope values */
-    Serial.print(accelRawToG(&mpu, AcZ));
     Serial.print(" | GyX = "); 
     Serial.print(gyroRawToDPS(&mpu, GyX));
     Serial.print(" | GyY = "); 
@@ -48,7 +57,7 @@ void loop()
     
     /* Temperature value */
     Serial.print(" | Tmp = "); 
-    Serial.println(Tmp/340.00+36.53);  /* Temperature formula from the datasheet of MPU6050 */
+    Serial.println(tempRawToCelsius(Tmp));
 
     delay(500);
 }
