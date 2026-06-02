@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <DHTesp.h>
 
-static const uint8_t DHT_PIN = 4;
+static const uint8_t DHT_PIN = 18;
 static DHTesp dht;
 
 void setup()
@@ -13,20 +13,41 @@ void setup()
     Serial.println("DHT11 ready");
 }
 
+unsigned long lastRead = 0;
+const unsigned long READ_PERIOD_MS = 2000;
+
+float lastTemp = NAN, lastHum = NAN;
+bool sensorValid = false;
+
 void loop()
 {
-    TempAndHumidity data = dht.getTempAndHumidity();
+    unsigned long now = millis();
+    if (now - lastRead >= READ_PERIOD_MS) {
+        lastRead = now;
 
-    if (isnan(data.temperature) || isnan(data.humidity)) {
-        Serial.println("Failed to read from DHT11 sensor");
-    } else {
+        // lettura sensore (DHT11 resta relativamente lenta, ma senza delay espliciti)
+        float t = dht.getTemperature();
+        float h = dht.getHumidity();
+
+        if (!isnan(t) && !isnan(h)) {
+            lastTemp = t;
+            lastHum = h;
+            sensorValid = true;
+        } else {
+            sensorValid = false;
+        }
+    }
+
+    if (sensorValid) 
+    {
         Serial.print("Temperature: ");
-        Serial.print(data.temperature);
-        Serial.println(" C");
+        Serial.print(lastTemp);
+        Serial.print(" [C]");
+        Serial.print(" | ");
 
         Serial.print("Humidity: ");
-        Serial.print(data.humidity);
-        Serial.println(" %");
+        Serial.print(lastHum);
+        Serial.println(" [%]");
     }
 
     delay(2000);
