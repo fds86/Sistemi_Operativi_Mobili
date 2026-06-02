@@ -4,7 +4,7 @@
 
 DHTesp dht;
 
-static Dht11Data sensorData = {NAN, NAN, 0, false};
+static Dht11Data sensorData = {false, NAN, NAN, 0};
 static unsigned long lastPrintedTs = 0;
 
 void setup()

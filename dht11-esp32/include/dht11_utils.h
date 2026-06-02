@@ -5,32 +5,49 @@
 #include <DHTesp.h>
 #include <math.h>
 
-#define DHT_PIN 18
+#define DHT_PIN 18 /**< GPIO pin used by DHT11 data line. */
 
-#define READ_PERIOD_MS 2000
+#define READ_PERIOD_MS 2000 /**< Minimum sampling period for DHT11 updates in milliseconds. */
 
+/** @brief Global DHTesp instance provided by the application source file. */
 extern DHTesp dht;
 
+/**
+ * @struct Dht11Data
+ * @brief Cached DHT11 values with validity and timestamp metadata.
+ */
 typedef struct 
 {
-    bool valid;
-    float temperatureC;
-    float humidityPct;
-    unsigned long timestampMs;
+    bool valid;               /**< True when cached values are valid. */
+    float temperatureC;       /**< Cached temperature in Celsius. */
+    float humidityPct;        /**< Cached relative humidity in percent. */
+    unsigned long timestampMs;/**< Timestamp of the last sampling attempt in milliseconds. */
 } Dht11Data;
 
+/**
+ * @brief Initializes the DHT11 sensor driver.
+ */
 inline void initDHT() 
 {
     dht.setup(DHT_PIN, DHTesp::DHT11);
     Serial.println("DHT11 ready");
 }
 
+/**
+ * @brief Performs an immediate DHT11 read.
+ * @return Raw temperature and humidity values from the DHT library.
+ */
 inline TempAndHumidity readDHT() 
 {
     TempAndHumidity values = dht.getTempAndHumidity();
     return values;
 }
 
+/**
+ * @brief Updates cached DHT11 data if the sampling period has elapsed.
+ * @param data Pointer to the destination cache structure.
+ * @note The caller must provide a valid non-null pointer.
+ */
 inline void readDHTWithTimestamp(Dht11Data *data) 
 {
     unsigned long now = millis();
