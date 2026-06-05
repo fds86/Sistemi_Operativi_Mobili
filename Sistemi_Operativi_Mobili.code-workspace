@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "mpu6050-esp32",
+			"path": "mpu6050-esp32"
+		},
+		{
+			"name": "dht11-esp32",
+			"path": "dht11-esp32"
+		}
+	],
+	"settings": {}
+}
