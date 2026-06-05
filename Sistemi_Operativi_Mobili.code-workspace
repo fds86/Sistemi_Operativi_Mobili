@@ -7,6 +7,10 @@
 		{
 			"name": "dht11-esp32",
 			"path": "dht11-esp32"
+		},
+		{
+			"name": "dht11_rest-esp32",
+			"path": "dht11_rest-esp32"
 		}
 	],
 	"settings": {}
