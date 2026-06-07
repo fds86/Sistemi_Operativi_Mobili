@@ -12,13 +12,13 @@ static bool lastValidity = false;
 void setup()
 {
     Serial.begin(9600);
-    initDHTSensor(&sensorData);
+    initDht11Sensor(&sensorData);
     initDht11Rest(&sensorData);
 }
 
 void loop()
 {
-    readDHTWithTimestamp(&sensorData);
+    readDht11SensorWithTimestamp(&sensorData);
     handleDht11Rest();
 
     if (true == sensorData.isDataValid && 

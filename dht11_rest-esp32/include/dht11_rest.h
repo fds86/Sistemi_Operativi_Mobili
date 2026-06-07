@@ -25,8 +25,6 @@ namespace dht11rest
         payload += true == data->isDataValid ? String(data->humidity_Pct, 1) : "null";
         payload += ",\"timestampMs\":";
         payload += String(data->timestamp_Ms);
-        payload += ",\"ageMs\":";
-        payload += String(data->deltaReadPeriod_Ms);
         payload += "}";
         return payload;
     }
@@ -46,16 +44,21 @@ namespace dht11rest
         page += ".tile{background:#f7f1e8;border-radius:16px;padding:16px;}";
         page += ".label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7b8794;}";
         page += ".value{margin-top:6px;font-size:30px;font-weight:700;}";
+        page += ".value.small{font-size:22px;}";
         page += ".status{margin-top:16px;font-size:14px;color:#52606d;}";
         page += "</style></head><body><div class='wrap'><section class='card'>";
         page += "<h1>DHT11 Sensor</h1><p>Dati letti via REST dall'ESP32.</p><div class='grid'>";
         page += "<div class='tile'><div class='label'>Temperature</div><div class='value' id='temp'>--.- C</div></div>";
-        page += "<div class='tile'><div class='label'>Humidity</div><div class='value' id='hum'>--.- %</div></div></div>";
+        page += "<div class='tile'><div class='label'>Humidity</div><div class='value' id='hum'>--.- %</div></div>";
+        page += "</div>";
         page += "<div class='status' id='status'>Waiting for data...</div></section></div><script>";
+        page += "let lastTimestampMs=null;let unchangedCount=0;";
         page += "async function refresh(){const res=await fetch('/api/data');const data=await res.json();";
         page += "const t=document.getElementById('temp');const h=document.getElementById('hum');";
-        page += "const s=document.getElementById('status');if(data.valid){t.textContent=data.temperatureC.toFixed(1)+' C';";
-        page += "h.textContent=data.humidityPct.toFixed(1)+' %';s.textContent='Ultimo aggiornamento: '+data.timestampMs+' ms';}";
+        page += "const s=document.getElementById('status');if(lastTimestampMs===data.timestampMs){unchangedCount++;}";
+        page += "else{unchangedCount=0;lastTimestampMs=data.timestampMs;}if(data.valid){t.textContent=data.temperatureC.toFixed(1)+' C';";
+        page += "h.textContent=data.humidityPct.toFixed(1)+' %';s.textContent=unchangedCount>=2?";
+        page += "'Dato valido ma non aggiornato':'Dato valido e aggiornato regolarmente';}";
         page += "else{t.textContent='n/a';h.textContent='n/a';s.textContent='Lettura non valida';}}";
         page += "refresh();setInterval(refresh,2000);</script></body></html>";
         return page;

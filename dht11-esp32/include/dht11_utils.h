@@ -27,7 +27,7 @@ typedef struct
 /**
  * @brief Initializes the DHT11 sensor driver.
  */
-inline void initDHT() 
+inline void initDht11Sensor() 
 {
     dht.setup(DHT_PIN, DHTesp::DHT11);
     Serial.println("DHT11 ready");
@@ -37,7 +37,7 @@ inline void initDHT()
  * @brief Performs an immediate DHT11 read.
  * @return Raw temperature and humidity values from the DHT library.
  */
-inline TempAndHumidity readDHT() 
+inline TempAndHumidity readDht11Sensor() 
 {
     TempAndHumidity values = dht.getTempAndHumidity();
     return values;
@@ -48,7 +48,7 @@ inline TempAndHumidity readDHT()
  * @param data Pointer to the destination cache structure.
  * @note The caller must provide a valid non-null pointer.
  */
-inline void readDHTWithTimestamp(Dht11Data *data) 
+inline void readDht11SensorWithTimestamp(Dht11Data *data) 
 {
     unsigned long now = millis();
     

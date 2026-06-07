@@ -18,18 +18,18 @@ extern DHTesp dht;
  */
 typedef struct 
 {
-    bool isDataValid;               /**< True when cached values are valid. */
-    float temperature_C;       /**< Cached temperature in Celsius. */
-    float humidity_Pct;        /**< Cached relative humidity in percent. */
+    bool isDataValid;                /**< True when cached values are valid. */
+    float temperature_C;             /**< Cached temperature in Celsius. */
+    float humidity_Pct;              /**< Cached relative humidity in percent. */
     unsigned int deltaReadPeriod_Ms; /**< Minimum sampling period for DHT11 updates in milliseconds. */
-    unsigned long timestamp_Ms;/**< Timestamp of the last sampling attempt in milliseconds. */
+    unsigned long timestamp_Ms;      /**< Timestamp of the last sampling attempt in milliseconds. */
 } Dht11Data;
 
 /**
  * @brief Resets the cached DHT11 data structure.
  * @param data Pointer to the structure to reset.
  */
-inline void resetDHTData(Dht11Data *data)
+inline void resetDht11SensorData(Dht11Data *data)
 {
     data->isDataValid = false;
     data->temperature_C = NAN;
@@ -41,18 +41,18 @@ inline void resetDHTData(Dht11Data *data)
 /**
  * @brief Initializes the DHT11 sensor driver.
  */
-inline void initDHTSensor(Dht11Data *data) 
+inline void initDht11Sensor(Dht11Data *data) 
 {
     dht.setup(DHT_PIN, DHTesp::DHT11);
     Serial.println("DHT11 ready");
-    resetDHTData(data);
+    resetDht11SensorData(data);
 }
 
 /**
  * @brief Performs an immediate DHT11 read.
  * @return Raw temperature and humidity values from the DHT library.
  */
-inline TempAndHumidity readDHT() 
+inline TempAndHumidity readDht11Sensor() 
 {
     TempAndHumidity values = dht.getTempAndHumidity();
     return values;
@@ -63,7 +63,7 @@ inline TempAndHumidity readDHT()
  * @param data Pointer to the destination cache structure.
  * @note The caller must provide a valid non-null pointer.
  */
-inline void readDHTWithTimestamp(Dht11Data *data) 
+inline void readDht11SensorWithTimestamp(Dht11Data *data) 
 {
     unsigned long now = millis();
     data->deltaReadPeriod_Ms = now - data->timestamp_Ms;
