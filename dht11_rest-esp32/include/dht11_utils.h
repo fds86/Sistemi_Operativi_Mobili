@@ -18,19 +18,34 @@ extern DHTesp dht;
  */
 typedef struct 
 {
-    bool valid;               /**< True when cached values are valid. */
-    float temperatureC;       /**< Cached temperature in Celsius. */
-    float humidityPct;        /**< Cached relative humidity in percent. */
-    unsigned long timestampMs;/**< Timestamp of the last sampling attempt in milliseconds. */
+    bool isDataValid;                /**< True when cached values are valid. */
+    float temperature_C;             /**< Cached temperature in Celsius. */
+    float humidity_Pct;              /**< Cached relative humidity in percent. */
+    unsigned int deltaReadPeriod_Ms; /**< Minimum sampling period for DHT11 updates in milliseconds. */
+    unsigned long timestamp_Ms;      /**< Timestamp of the last sampling attempt in milliseconds. */
 } Dht11Data;
+
+/**
+ * @brief Resets the cached DHT11 data structure.
+ * @param data Pointer to the structure to reset.
+ */
+inline void resetDht11SensorData(Dht11Data *data)
+{
+    data->isDataValid = false;
+    data->temperature_C = NAN;
+    data->humidity_Pct = NAN;
+    data->timestamp_Ms = 0U;
+    data->deltaReadPeriod_Ms = 0U;
+}
 
 /**
  * @brief Initializes the DHT11 sensor driver.
  */
-inline void initDht11Sensor() 
+inline void initDht11Sensor(Dht11Data *data) 
 {
     dht.setup(DHT_PIN, DHTesp::DHT11);
     Serial.println("DHT11 ready");
+    resetDht11SensorData(data);
 }
 
 /**
@@ -51,23 +66,24 @@ inline TempAndHumidity readDht11Sensor()
 inline void readDht11SensorWithTimestamp(Dht11Data *data) 
 {
     unsigned long now = millis();
+    data->deltaReadPeriod_Ms = now - data->timestamp_Ms;
     
-    if (now - data->timestampMs >= READ_PERIOD_MS)
+    if (data->deltaReadPeriod_Ms >= READ_PERIOD_MS)
     {
-        data->timestampMs = now;
+        data->timestamp_Ms = now;
 
         TempAndHumidity values = dht.getTempAndHumidity();
         
         if (false == isnan(values.temperature) && 
             false == isnan(values.humidity)) 
         {
-            data->valid = true;
-            data->temperatureC = values.temperature;
-            data->humidityPct = values.humidity;
+            data->isDataValid = true;
+            data->temperature_C = values.temperature;
+            data->humidity_Pct = values.humidity;
         }
         else 
         {
-            data->valid = false;
+            data->isDataValid = false;
         }
     }
 }

@@ -10,12 +10,12 @@ static unsigned long lastPrintedTs = 0;
 void setup()
 {
     Serial.begin(9600);
-    initDHT();
+    initDht11Sensor();
 }
 
 void loop()
 {
-    readDHTWithTimestamp(&sensorData);
+    readDht11SensorWithTimestamp(&sensorData);
 
     if (true == sensorData.valid && 
         sensorData.timestampMs != lastPrintedTs)
