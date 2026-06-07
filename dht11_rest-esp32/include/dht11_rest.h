@@ -18,13 +18,15 @@ namespace dht11rest
     {
         String payload = "{";
         payload += "\"valid\":";
-        payload += (true == data->valid) ? "true" : "false";
+        payload += (true == data->isDataValid) ? "true" : "false";
         payload += ",\"temperatureC\":";
-        payload += true == data->valid ? String(data->temperatureC, 1) : "null";
+        payload += true == data->isDataValid ? String(data->temperature_C, 1) : "null";
         payload += ",\"humidityPct\":";
-        payload += true == data->valid ? String(data->humidityPct, 1) : "null";
+        payload += true == data->isDataValid ? String(data->humidity_Pct, 1) : "null";
         payload += ",\"timestampMs\":";
-        payload += String(data->timestampMs);
+        payload += String(data->timestamp_Ms);
+        payload += ",\"ageMs\":";
+        payload += String(data->deltaReadPeriod_Ms);
         payload += "}";
         return payload;
     }

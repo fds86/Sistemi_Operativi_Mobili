@@ -5,13 +5,14 @@
 
 DHTesp dht;
 
-static Dht11Data sensorData = {false, NAN, NAN, 0};
+static Dht11Data sensorData = {false, NAN, NAN, 0, 0};
 static unsigned long lastPrintedTs = 0;
+static bool lastValidity = false;
 
 void setup()
 {
     Serial.begin(9600);
-    initDHT();
+    initDHTSensor(&sensorData);
     initDht11Rest(&sensorData);
 }
 
@@ -20,18 +21,25 @@ void loop()
     readDHTWithTimestamp(&sensorData);
     handleDht11Rest();
 
-    if (true == sensorData.valid && 
-        sensorData.timestampMs != lastPrintedTs)
+    if (true == sensorData.isDataValid && 
+        sensorData.timestamp_Ms != lastPrintedTs)
     {
-        lastPrintedTs = sensorData.timestampMs;
+        lastPrintedTs = sensorData.timestamp_Ms;
 
         Serial.print("Temperature: ");
-        Serial.print(sensorData.temperatureC);
+        Serial.print(sensorData.temperature_C);
         Serial.print(" [C]");
         Serial.print(" | ");
 
         Serial.print("Humidity: ");
-        Serial.print(sensorData.humidityPct);
+        Serial.print(sensorData.humidity_Pct);
         Serial.println(" [%]");
     }
+    else if (false == sensorData.isDataValid && 
+             true == lastValidity)
+    {
+        Serial.println("Invalid DHT11 reading");
+    }
+
+    lastValidity = sensorData.isDataValid;
 }
