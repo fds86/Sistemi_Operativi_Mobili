@@ -25,6 +25,18 @@ typedef struct
 } Dht11Data;
 
 /**
+ * @brief Resets the cached DHT11 data structure.
+ * @param data Pointer to the structure to reset.
+ */
+inline void resetDHTData(Dht11Data *data)
+{
+    data->valid = false;
+    data->temperatureC = NAN;
+    data->humidityPct = NAN;
+    data->timestampMs = 0;
+}
+
+/**
  * @brief Initializes the DHT11 sensor driver.
  */
 inline void initDHT() 
