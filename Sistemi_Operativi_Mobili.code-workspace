@@ -11,6 +11,10 @@
 		{
 			"name": "dht11_rest-esp32",
 			"path": "dht11_rest-esp32"
+		},
+		{
+			"name": "dht11_mqtt-esp32",
+			"path": "dht11_mqtt-esp32"
 		}
 	],
 	"settings": {}
