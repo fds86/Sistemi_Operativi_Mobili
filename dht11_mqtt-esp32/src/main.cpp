@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <DHTesp.h>
 #include "dht11_utils.h"
-#include "dht11_rest.h"
+#include "dht11_mqtt.h"
 
 DHTesp dht;
 
@@ -13,13 +13,13 @@ void setup()
 {
     Serial.begin(9600);
     initDht11Sensor(&sensorData);
-    initDht11Rest(&sensorData);
+    initDht11Mqtt(&sensorData);
 }
 
 void loop()
 {
     readDht11SensorWithTimestamp(&sensorData);
-    handleDht11Rest();
+    handleDht11Mqtt();
 
     if (true == sensorData.isDataValid && 
         sensorData.timestamp_Ms != lastPrintedTs)
