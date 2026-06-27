@@ -15,6 +15,10 @@
 		{
 			"name": "dht11_mqtt-esp32",
 			"path": "dht11_mqtt-esp32"
+		},
+		{
+			"name": "progetto_esame",
+			"path": "progetto_esame"
 		}
 	],
 	"settings": {}
