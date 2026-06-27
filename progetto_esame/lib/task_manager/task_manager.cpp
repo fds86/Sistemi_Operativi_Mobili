@@ -111,10 +111,8 @@ static void MqttTask(void *parameter)
 
     for (;;)
     {
-        unsigned long now_ms = millis();
-
-        ConnectWifiIfNeeded(now_ms);
-        ConnectMqttIfNeeded(&mqtt_client, now_ms);
+        ConnectWifiIfNeeded();
+        ConnectMqttIfNeeded(&mqtt_client);
 
         if (true == mqtt_client.connected())
         {

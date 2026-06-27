@@ -12,11 +12,10 @@ inline void InitializeDht11Sensor(DHTesp *dhtSensor)
     Serial.println("DHT11 ready");
 }
 
-inline void ReadDht11Sensor(
-    DHTesp *dhtSensor,
-    float *temperatureC,
-    float *humidityPct,
-    bool *isValid)
+inline void ReadDht11Sensor(DHTesp *dhtSensor,
+                            float *temperatureC,
+                            float *humidityPct,
+                            bool *isValid)
 {
     TempAndHumidity values = dhtSensor->getTempAndHumidity();
 

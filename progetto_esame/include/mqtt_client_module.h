@@ -20,33 +20,37 @@ inline bool HasBrokerAddress()
 
 inline void InitializeNetworkStack(PubSubClient *mqttClient)
 {
+    bool has_wifi_credentials = HasWifiCredentials();
+    bool has_broker_address = HasBrokerAddress();
+
     WiFi.mode(WIFI_STA);
     WiFi.setAutoReconnect(true);
     WiFi.persistent(false);
 
     mqttClient->setServer(MQTT_BROKER, MQTT_PORT);
 
-    if (false == HasWifiCredentials())
+    if (false == has_wifi_credentials)
     {
         Serial.println("Set WIFI_SSID and WIFI_PASSWORD in project_config.h");
     }
 
-    if (false == HasBrokerAddress())
+    if (false == has_broker_address)
     {
         Serial.println("Set MQTT_BROKER in project_config.h");
     }
 }
 
-inline void ConnectWifiIfNeeded(unsigned long nowMs)
+inline void ConnectWifiIfNeeded()
 {
-    (void) nowMs;
-
-    if (WL_CONNECTED == WiFi.status())
+    uint8_t wifi_status = WiFi.status();
+    bool has_wifi_credentials = HasWifiCredentials();
+    
+    if (WL_CONNECTED == (wl_status_t)wifi_status)
     {
         return;
     }
 
-    if (false == HasWifiCredentials())
+    if (false == has_wifi_credentials)
     {
         return;
     }
@@ -56,11 +60,12 @@ inline void ConnectWifiIfNeeded(unsigned long nowMs)
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }
 
-inline void ConnectMqttIfNeeded(PubSubClient *mqttClient, unsigned long nowMs)
+inline void ConnectMqttIfNeeded(PubSubClient *mqttClient)
 {
-    (void) nowMs;
-
-    if (false == HasBrokerAddress())
+    uint8_t wifi_status = WiFi.status();
+    bool has_broker_address = HasBrokerAddress();
+    
+    if (false == has_broker_address)
     {
         return;
     }
@@ -70,7 +75,7 @@ inline void ConnectMqttIfNeeded(PubSubClient *mqttClient, unsigned long nowMs)
         return;
     }
 
-    if (WL_CONNECTED != WiFi.status())
+    if (WL_CONNECTED != (wl_status_t)wifi_status)
     {
         return;
     }
@@ -94,46 +99,57 @@ inline void ConnectMqttIfNeeded(PubSubClient *mqttClient, unsigned long nowMs)
     }
 }
 
-inline bool BuildTelemetryPayload(
-    bool isValid,
-    float temperatureC,
-    float humidityPct,
-    unsigned long timestampMs,
-    bool alarmOn,
-    char *payloadBuffer,
-    size_t payloadBufferSize)
+inline bool BuildTelemetryPayload(bool isValid,
+                                  float temperatureC,
+                                  float humidityPct,
+                                  char *payloadBuffer,
+                                  size_t payloadBufferSize)
 {
-    (void) timestampMs;
-    (void) alarmOn;
-
-    int written = 0;
+    bool is_payload_buffer_valid = true;
+    int written_chars = 0;
 
     if (true == isValid)
     {
-        written = snprintf(
-            payloadBuffer,
-            payloadBufferSize,
-            "{\"temperatureC\":%.1f,\"humidityPct\":%.1f}",
-            temperatureC,
-            humidityPct);
+        written_chars = snprintf(payloadBuffer,
+                                 payloadBufferSize,
+                                 "{\"temperatureC\":%.1f,\"humidityPct\":%.1f}",
+                                 temperatureC,
+                                 humidityPct);
     }
     else
     {
-        written = snprintf(payloadBuffer, payloadBufferSize, "{\"error\":\"invalid_sensor_data\"}");
+        written_chars = snprintf(payloadBuffer, 
+                                 payloadBufferSize, 
+                                 "{\"error\":\"invalid_sensor_data\"}");
     }
 
-    return (written > 0) && (static_cast<size_t>(written) < payloadBufferSize);
+    if (written_chars <= 0)
+    {
+        is_payload_buffer_valid = false;
+        return false;
+    }
+
+    if ((size_t)written_chars >= payloadBufferSize)
+    {
+        is_payload_buffer_valid = false;
+        return false;
+    }
+
+    return is_payload_buffer_valid;
 }
 
-inline void PublishTelemetryIfUpdated(
-    PubSubClient *mqttClient,
-    bool isValid,
-    float temperatureC,
-    float humidityPct,
-    unsigned long timestampMs,
-    bool alarmOn,
-    unsigned long *lastPublishedTimestampMs)
+inline void PublishTelemetryIfUpdated(PubSubClient *mqttClient,
+                                      bool isValid,
+                                      float temperatureC,
+                                      float humidityPct,
+                                      unsigned long timestampMs,
+                                      bool alarmOn,
+                                      unsigned long *lastPublishedTimestampMs)
 {
+    bool build_payload_success = false;
+    bool is_published = false;
+    char payload_buffer[160] = {0};
+
     if (false == mqttClient->connected())
     {
         return;
@@ -149,22 +165,19 @@ inline void PublishTelemetryIfUpdated(
         return;
     }
 
-    char payload_buffer[160] = {0};
+    build_payload_success = BuildTelemetryPayload(isValid,
+                                                  temperatureC,
+                                                  humidityPct,
+                                                  payload_buffer,
+                                                  sizeof(payload_buffer));
 
-    if (false == BuildTelemetryPayload(
-        isValid,
-        temperatureC,
-        humidityPct,
-        timestampMs,
-        alarmOn,
-        payload_buffer,
-        sizeof(payload_buffer)))
+    if (false == build_payload_success)
     {
         Serial.println("Telemetry payload error");
         return;
     }
 
-    bool is_published = mqttClient->publish(TELEMETRY_TOPIC, payload_buffer);
+    is_published = mqttClient->publish(TELEMETRY_TOPIC, payload_buffer);
 
     if (true == is_published)
     {
