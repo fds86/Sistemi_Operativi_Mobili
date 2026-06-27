@@ -21,7 +21,6 @@ static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
                                                    char *payloadBuffer,
                                                    size_t payloadBufferSize)
 {
-    bool is_payload_buffer_valid = true;
     int written_chars = 0;
 
     if (true == isValid)
@@ -42,18 +41,16 @@ static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
     if (written_chars <= 0)
     {
         /* snprintf failed or produced an empty payload. */
-        is_payload_buffer_valid = false;
         return false;
     }
 
     if ((size_t)written_chars >= payloadBufferSize)
     {
         /* Payload would be truncated; reject publish attempt. */
-        is_payload_buffer_valid = false;
         return false;
     }
 
-    return is_payload_buffer_valid;
+    return true;
 }
 
 void MqttClientModule_InitializeNetworkStack(PubSubClient *mqttClient)

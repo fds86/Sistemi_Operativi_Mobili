@@ -20,7 +20,6 @@
 /* Wi-Fi configuration */
 #define WIFI_SSID "SSID_XXX" /**< Wi-Fi SSID for station mode connection. */
 #define WIFI_PASSWORD "PASSWORD_XXX" /**< Wi-Fi password for station mode connection. */
-#define WIFI_RECONNECT_PERIOD_MS 5000U /**< Reserved reconnect interval for Wi-Fi (milliseconds). */
 
 /* MQTT configuration */
 #define MQTT_BROKER "broker.hivemq.com" /**< MQTT broker hostname. */
@@ -29,6 +28,5 @@
 #define TELEMETRY_TOPIC "sistemi_operativi_mobili/progetto_esame/telemetry" /**< Topic used to publish sensor telemetry. */
 #define STATUS_TOPIC "sistemi_operativi_mobili/progetto_esame/status" /**< Topic used to publish connection status messages. */
 #define MQTT_PERIOD_MS 1000U /**< MQTT handling period in milliseconds. */
-#define MQTT_RECONNECT_PERIOD_MS 3000U /**< Reserved reconnect interval for MQTT (milliseconds). */
 
 #endif
