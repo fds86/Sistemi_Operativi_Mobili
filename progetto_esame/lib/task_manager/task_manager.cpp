@@ -66,7 +66,7 @@ static void SensorTask(void *parameter)
         float humidity_pct = NAN;
         bool is_valid = false;
 
-        ReadDht11Sensor(&dht_sensor, &temperature_c, &humidity_pct, &is_valid);
+        Dht11SensorModule_ReadDht11Sensor(&dht_sensor, &temperature_c, &humidity_pct, &is_valid);
 
         UpdateSharedData(temperature_c, humidity_pct, is_valid);
 
@@ -111,8 +111,8 @@ static void MqttTask(void *parameter)
 
     for (;;)
     {
-        ConnectWifiIfNeeded();
-        ConnectMqttIfNeeded(&mqtt_client);
+        MqttClientModule_ConnectWifiIfNeeded();
+        MqttClientModule_ConnectMqttIfNeeded(&mqtt_client);
 
         if (true == mqtt_client.connected())
         {
@@ -121,26 +121,24 @@ static void MqttTask(void *parameter)
 
         CopySharedData(&snapshot_data);
 
-        PublishTelemetryIfUpdated(
-            &mqtt_client,
-            snapshot_data.valid,
-            snapshot_data.temperatureC,
-            snapshot_data.humidityPct,
-            snapshot_data.timestampMs,
-            snapshot_data.alarmOn,
-            &last_published_timestamp_ms);
+        MqttClientModule_PublishTelemetryIfUpdated(&mqtt_client,
+                                                   snapshot_data.valid,
+                                                   snapshot_data.temperatureC,
+                                                   snapshot_data.humidityPct,
+                                                   snapshot_data.timestampMs,
+                                                   &last_published_timestamp_ms);
 
         vTaskDelay(pdMS_TO_TICKS(MQTT_PERIOD_MS));
     }
 }
 
-void SetupTaskManager()
+void TaskManager_SetupTaskManager()
 {
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, LOW);
 
-    InitializeDht11Sensor(&dht_sensor);
-    InitializeNetworkStack(&mqtt_client);
+    Dht11SensorModule_InitializeDht11Sensor(&dht_sensor);
+    MqttClientModule_InitializeNetworkStack(&mqtt_client);
 
     shared_data_mutex = xSemaphoreCreateMutex();
     if (nullptr == shared_data_mutex)

@@ -1,6 +1,6 @@
 #ifndef TASK_MANAGER_H
 #define TASK_MANAGER_H
 
-void SetupTaskManager();
+void TaskManager_SetupTaskManager();
 
 #endif

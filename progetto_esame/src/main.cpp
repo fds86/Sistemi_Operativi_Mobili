@@ -4,7 +4,7 @@
 void setup()
 {
     Serial.begin(9600);
-    SetupTaskManager();
+    TaskManager_SetupTaskManager();
 }
 
 void loop()
