@@ -16,6 +16,7 @@ void Dht11SensorModule_ReadDht11Sensor(DHTesp *dhtSensor,
 {
     TempAndHumidity values = dhtSensor->getTempAndHumidity();
 
+    /* DHT11 may return NaN on transient read errors. */
     *isValid = (false == isnan(values.temperature)) &&
                (false == isnan(values.humidity));
 

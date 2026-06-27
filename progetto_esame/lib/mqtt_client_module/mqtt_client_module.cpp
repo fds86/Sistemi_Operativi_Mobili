@@ -41,12 +41,14 @@ static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
 
     if (written_chars <= 0)
     {
+        /* snprintf failed or produced an empty payload. */
         is_payload_buffer_valid = false;
         return false;
     }
 
     if ((size_t)written_chars >= payloadBufferSize)
     {
+        /* Payload would be truncated; reject publish attempt. */
         is_payload_buffer_valid = false;
         return false;
     }
@@ -67,11 +69,13 @@ void MqttClientModule_InitializeNetworkStack(PubSubClient *mqttClient)
 
     if (false == has_wifi_credentials)
     {
+        /* Keep running because credentials can be configured later. */
         Serial.println("Set WIFI_SSID and WIFI_PASSWORD in project_config.h");
     }
 
     if (false == has_broker_address)
     {
+        /* Keep running because broker can be configured later. */
         Serial.println("Set MQTT_BROKER in project_config.h");
     }
 }
@@ -83,11 +87,13 @@ void MqttClientModule_ConnectWifiIfNeeded()
 
     if (WL_CONNECTED == (wl_status_t)wifi_status)
     {
+        /* Wi-Fi is already connected. */
         return;
     }
 
     if (false == has_wifi_credentials)
     {
+        /* Skip connection attempt without credentials. */
         return;
     }
 
@@ -103,16 +109,19 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
 
     if (false == has_broker_address)
     {
+        /* Skip MQTT connection until broker is configured. */
         return;
     }
 
     if (true == mqttClient->connected())
     {
+        /* MQTT session is already active. */
         return;
     }
 
     if (WL_CONNECTED != (wl_status_t)wifi_status)
     {
+        /* MQTT connection requires active Wi-Fi. */
         return;
     }
 
@@ -148,16 +157,19 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
 
     if (false == mqttClient->connected())
     {
+        /* Skip publish without active broker connection. */
         return;
     }
 
     if (0UL == timestampMs)
     {
+        /* Ignore uninitialized sensor timestamp. */
         return;
     }
 
     if (timestampMs == *lastPublishedTimestampMs)
     {
+        /* Publish only when a newer sample is available. */
         return;
     }
 
@@ -169,6 +181,7 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
 
     if (false == build_payload_success)
     {
+        /* Skip publish when JSON payload is invalid. */
         Serial.println("Telemetry payload error");
         return;
     }
@@ -177,6 +190,7 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
 
     if (true == is_published)
     {
+        /* Update cache to avoid republishing the same sample. */
         *lastPublishedTimestampMs = timestampMs;
         Serial.print("MQTT telemetry -> ");
         Serial.println(payload_buffer);

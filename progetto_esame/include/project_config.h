@@ -1,25 +1,34 @@
 #ifndef PROJECT_CONFIG_H
 #define PROJECT_CONFIG_H
 
-#define DHT_PIN 18U
-#define LED_PIN 2U
+/**
+ * @file project_config.h
+ * @brief Shared project configuration macros for ESP32, sensor timing, and MQTT.
+ */
 
-#define SENSOR_PERIOD_MS 2000U
-#define CONTROL_PERIOD_MS 500U
-#define MQTT_PERIOD_MS 1000U
+/* Pin configuration */
+#define DHT_PIN 18U /**< GPIO used by the DHT11 data line. */
+#define LED_PIN 2U /**< GPIO used as actuator output (LED). */
 
-#define WIFI_RECONNECT_PERIOD_MS 5000U
-#define MQTT_RECONNECT_PERIOD_MS 3000U
+/* Sensor configuration */
+#define SENSOR_PERIOD_MS 2000U /**< Sensor acquisition period in milliseconds. */
 
-#define TEMPERATURE_THRESHOLD_C 30.0F
+/* Actuator configuration */
+#define TEMPERATURE_THRESHOLD_C 30.0F /**< Temperature threshold used to activate the LED actuator. */
+#define CONTROL_PERIOD_MS 500U /**< Actuator control period in milliseconds. */
 
-#define WIFI_SSID "SSID_XXX"
-#define WIFI_PASSWORD "PASSWORD_XXX"
+/* Wi-Fi configuration */
+#define WIFI_SSID "SSID_XXX" /**< Wi-Fi SSID for station mode connection. */
+#define WIFI_PASSWORD "PASSWORD_XXX" /**< Wi-Fi password for station mode connection. */
+#define WIFI_RECONNECT_PERIOD_MS 5000U /**< Reserved reconnect interval for Wi-Fi (milliseconds). */
 
-#define MQTT_BROKER "broker.hivemq.com"
-#define MQTT_PORT 1883U
-#define MQTT_CLIENT_ID "esp32-ambient-monitor"
-#define TELEMETRY_TOPIC "sistemi_operativi_mobili/progetto_esame/telemetry"
-#define STATUS_TOPIC "sistemi_operativi_mobili/progetto_esame/status"
+/* MQTT configuration */
+#define MQTT_BROKER "broker.hivemq.com" /**< MQTT broker hostname. */
+#define MQTT_PORT 1883U /**< MQTT broker port. */
+#define MQTT_CLIENT_ID "esp32-ambient-monitor" /**< Client identifier used by ESP32 on broker connection. */
+#define TELEMETRY_TOPIC "sistemi_operativi_mobili/progetto_esame/telemetry" /**< Topic used to publish sensor telemetry. */
+#define STATUS_TOPIC "sistemi_operativi_mobili/progetto_esame/status" /**< Topic used to publish connection status messages. */
+#define MQTT_PERIOD_MS 1000U /**< MQTT handling period in milliseconds. */
+#define MQTT_RECONNECT_PERIOD_MS 3000U /**< Reserved reconnect interval for MQTT (milliseconds). */
 
 #endif

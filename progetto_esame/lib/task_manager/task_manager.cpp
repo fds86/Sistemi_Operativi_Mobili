@@ -29,6 +29,7 @@ static void CopySharedData(SharedSensorData *destination)
 {
     if (pdTRUE == xSemaphoreTake(shared_data_mutex, portMAX_DELAY))
     {
+        /* Copy a consistent snapshot while holding the shared mutex. */
         *destination = shared_data;
         xSemaphoreGive(shared_data_mutex);
     }
@@ -43,12 +44,14 @@ static void UpdateSharedData(float temperatureC, float humidityPct, bool isValid
 
         if (true == isValid)
         {
+            /* Update values and alarm state only when sensor data is valid. */
             shared_data.temperatureC = temperatureC;
             shared_data.humidityPct = humidityPct;
             shared_data.alarmOn = (temperatureC >= TEMPERATURE_THRESHOLD_C);
         }
         else
         {
+            /* On invalid read, force actuator-safe state. */
             shared_data.alarmOn = false;
         }
 
@@ -80,6 +83,7 @@ static void SensorTask(void *parameter)
         }
         else
         {
+            /* Invalid reads are expected occasionally with DHT11. */
             Serial.println("[SensorTask] Invalid DHT11 reading");
         }
 
@@ -116,6 +120,7 @@ static void MqttTask(void *parameter)
 
         if (true == mqtt_client.connected())
         {
+            /* Keep MQTT internal state machine active while connected. */
             mqtt_client.loop();
         }
 
@@ -143,6 +148,7 @@ void TaskManager_SetupTaskManager()
     shared_data_mutex = xSemaphoreCreateMutex();
     if (nullptr == shared_data_mutex)
     {
+        /* Cannot continue safely without mutual exclusion on shared data. */
         Serial.println("Failed to create sharedData mutex");
         for (;;)
         {
