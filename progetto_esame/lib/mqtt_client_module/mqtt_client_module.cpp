@@ -5,6 +5,9 @@
 #include <string.h>
 #include "mqtt_client_module.h"
 
+static unsigned long wifi_last_connect_attempt_ms = 0UL;
+static unsigned long mqtt_last_connect_attempt_ms = 0UL;
+
 static bool MqttClientModule_HasWifiCredentials()
 {
     return (strlen(WIFI_SSID) > 0U);
@@ -79,6 +82,8 @@ void MqttClientModule_InitializeNetworkStack(PubSubClient *mqttClient)
 
 void MqttClientModule_ConnectWifiIfNeeded()
 {
+    const unsigned long wifi_connect_retry_interval_ms = 5000UL;
+    unsigned long now_ms = millis();
     uint8_t wifi_status = WiFi.status();
     bool has_wifi_credentials = MqttClientModule_HasWifiCredentials();
 
@@ -94,13 +99,24 @@ void MqttClientModule_ConnectWifiIfNeeded()
         return;
     }
 
+    if ((now_ms - wifi_last_connect_attempt_ms) < wifi_connect_retry_interval_ms)
+    {
+        /* Avoid repeated WiFi.begin calls while association is in progress. */
+        return;
+    }
+
+    wifi_last_connect_attempt_ms = now_ms;
+
     Serial.print("Connecting WiFi SSID: ");
     Serial.println(WIFI_SSID);
+
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }
 
 void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
 {
+    const unsigned long mqtt_connect_retry_interval_ms = 3000UL;
+    unsigned long now_ms = millis();
     uint8_t wifi_status = WiFi.status();
     bool has_broker_address = MqttClientModule_HasBrokerAddress();
 
@@ -121,6 +137,14 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
         /* MQTT connection requires active Wi-Fi. */
         return;
     }
+
+    if ((now_ms - mqtt_last_connect_attempt_ms) < mqtt_connect_retry_interval_ms)
+    {
+        /* Avoid reconnect spam while broker is unavailable. */
+        return;
+    }
+
+    mqtt_last_connect_attempt_ms = now_ms;
 
     Serial.print("Connecting MQTT broker: ");
     Serial.print(MQTT_BROKER);
