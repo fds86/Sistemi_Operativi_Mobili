@@ -20,9 +20,10 @@ static bool HasBrokerAddress()
 
 static bool PublishToTopic(PubSubClient *mqttClient,
                            const char *topic,
-                           const char *payload)
+                           const char *payload,
+                           bool isRetained)
 {
-    bool is_published = mqttClient->publish(topic, payload);
+    bool is_published = mqttClient->publish(topic, payload, isRetained);
 
     /* Log broker publish failures to ease runtime diagnostics. */
     if (false == is_published)
@@ -175,7 +176,7 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
     if (true == is_connected)
     {
         Serial.println("MQTT connected");
-        PublishToTopic(mqttClient, STATUS_TOPIC, "online");
+        PublishToTopic(mqttClient, STATUS_TOPIC, "online", true);
     }
     else
     {
@@ -228,7 +229,7 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
     }
 
     /* Publish telemetry to MQTT broker. */
-    is_published = PublishToTopic(mqttClient, TELEMETRY_TOPIC, payload_buffer);
+    is_published = PublishToTopic(mqttClient, TELEMETRY_TOPIC, payload_buffer, false);
 
     /* Update publish watermark only when broker accept succeeds. */
     if (true == is_published)
