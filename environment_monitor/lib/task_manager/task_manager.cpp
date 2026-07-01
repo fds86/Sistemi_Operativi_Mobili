@@ -9,13 +9,16 @@
 #include "mqtt_client_module.h"
 #include "task_manager.h"
 
+/**
+ * @brief Shared sensor data exchanged across FreeRTOS tasks.
+ */
 struct SharedSensorData
 {
-    bool valid;
-    float temperatureC;
-    float humidityPct;
-    unsigned long timestampMs;
-    bool alarmOn;
+    bool valid; /**< True when the sampled sensor data is valid. */
+    float temperatureC; /**< Last sampled temperature in Celsius. */
+    float humidityPct; /**< Last sampled relative humidity percentage. */
+    unsigned long timestampMs; /**< Timestamp in milliseconds of the last sample update. */
+    bool alarmOn; /**< Actuator state derived from threshold control logic. */
 };
 
 static DHTesp dht_sensor;
@@ -24,6 +27,38 @@ static PubSubClient mqtt_client(wifi_client);
 
 static SharedSensorData shared_data = {false, NAN, NAN, 0UL, false};
 static SemaphoreHandle_t shared_data_mutex = nullptr;
+
+/**
+ * @brief Copies the latest shared sensor data into a destination buffer.
+ * @param destination Output pointer receiving the copied shared data.
+ */
+static void CopySharedData(SharedSensorData *destination);
+
+/**
+ * @brief Updates shared sensor data and alarm state under mutex protection.
+ * @param temperatureC Last sampled temperature in Celsius.
+ * @param humidityPct Last sampled relative humidity percentage.
+ * @param isValid True when the latest sensor sample is valid.
+ */
+static void UpdateSharedData(float temperatureC, float humidityPct, bool isValid);
+
+/**
+ * @brief FreeRTOS task that periodically acquires DHT11 samples.
+ * @param[in] Unused FreeRTOS task parameter.
+ */
+static void SensorTask(void *);
+
+/**
+ * @brief FreeRTOS task that drives the actuator according to alarm state.
+ * @param[in] Unused FreeRTOS task parameter.
+ */
+static void ActuatorTask(void *);
+
+/**
+ * @brief FreeRTOS task that maintains MQTT connectivity and telemetry publish.
+ * @param[in] Unused FreeRTOS task parameter.
+ */
+static void MqttTask(void *);
 
 static void CopySharedData(SharedSensorData *destination)
 {
@@ -44,12 +79,21 @@ static void UpdateSharedData(float temperatureC, float humidityPct, bool isValid
         shared_data.valid = isValid;
         shared_data.timestampMs = millis();
 
-        if (true == isValid)
+        if (true == shared_data.valid)
         {
             /* Update values and alarm state only when sensor data is valid. */
             shared_data.temperatureC = temperatureC;
             shared_data.humidityPct = humidityPct;
-            shared_data.alarmOn = (temperatureC >= TEMPERATURE_THRESHOLD_C);
+
+            /* Update alarm state based on temperature threshold. */
+            if (temperatureC >= TEMPERATURE_THRESHOLD_C)
+            {
+                shared_data.alarmOn = true;
+            }
+            else
+            {
+                shared_data.alarmOn = false;
+            }
         }
         else
         {
@@ -61,18 +105,18 @@ static void UpdateSharedData(float temperatureC, float humidityPct, bool isValid
     }
 }
 
-static void SensorTask(void *parameter)
+static void SensorTask(void *)
 {
-    (void) parameter;
-
     for (;;)
     {
-        float temperature_c = NAN;
-        float humidity_pct = NAN;
+        float temperature_c = 0.0;
+        float humidity_pct = 0.0;
         bool is_valid = false;
 
+        /* Read sensor values. */
         Dht11SensorModule_ReadDht11Sensor(&dht_sensor, &temperature_c, &humidity_pct, &is_valid);
 
+        /* Update shared data with the latest sensor values. */
         UpdateSharedData(temperature_c, humidity_pct, is_valid);
 
         /* Print full telemetry only for valid sensor samples. */
@@ -94,25 +138,30 @@ static void SensorTask(void *parameter)
     }
 }
 
-static void ControlTask(void *parameter)
+static void ActuatorTask(void *)
 {
-    (void) parameter;
-
     SharedSensorData snapshot_data = {false, NAN, NAN, 0UL, false};
 
     for (;;)
     {
         CopySharedData(&snapshot_data);
-        digitalWrite(LED_PIN, snapshot_data.alarmOn ? HIGH : LOW);
+
+        /* Update actuator state based on alarm flag. */
+        if (true == snapshot_data.alarmOn)
+        {
+            digitalWrite(LED_PIN, HIGH);
+        }
+        else
+        {
+            digitalWrite(LED_PIN, LOW);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(CONTROL_PERIOD_MS));
     }
 }
 
-static void MqttTask(void *parameter)
+static void MqttTask(void *)
 {
-    (void) parameter;
-
     SharedSensorData snapshot_data = {false, NAN, NAN, 0UL, false};
     unsigned long last_published_timestamp_ms = 0UL;
 
@@ -162,7 +211,7 @@ void TaskManager_SetupTaskManager()
     }
 
     xTaskCreatePinnedToCore(SensorTask, "SensorTask", 4096, nullptr, 1, nullptr, 1);
-    xTaskCreatePinnedToCore(ControlTask, "ControlTask", 2048, nullptr, 1, nullptr, 1);
+    xTaskCreatePinnedToCore(ActuatorTask, "ActuatorTask", 2048, nullptr, 1, nullptr, 1);
     xTaskCreatePinnedToCore(MqttTask, "MqttTask", 4096, nullptr, 1, nullptr, 1);
 
     Serial.println("Task manager ready");

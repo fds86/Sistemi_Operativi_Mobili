@@ -8,19 +8,19 @@
 static unsigned long wifi_last_connect_attempt_ms = 0UL;
 static unsigned long mqtt_last_connect_attempt_ms = 0UL;
 
-static bool MqttClientModule_HasWifiCredentials()
+static bool HasWifiCredentials()
 {
     return (strlen(WIFI_SSID) > 0U);
 }
 
-static bool MqttClientModule_HasBrokerAddress()
+static bool HasBrokerAddress()
 {
     return (strlen(MQTT_BROKER) > 0U);
 }
 
-static bool MqttClientModule_PublishToTopic(PubSubClient *mqttClient,
-                                            const char *topic,
-                                            const char *payload)
+static bool PublishToTopic(PubSubClient *mqttClient,
+                           const char *topic,
+                           const char *payload)
 {
     bool is_published = mqttClient->publish(topic, payload);
 
@@ -34,11 +34,11 @@ static bool MqttClientModule_PublishToTopic(PubSubClient *mqttClient,
     return is_published;
 }
 
-static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
-                                                   float temperatureC,
-                                                   float humidityPct,
-                                                   char *payloadBuffer,
-                                                   size_t payloadBufferSize)
+static bool BuildTelemetryPayload(bool isValid,
+                                  float temperatureC,
+                                  float humidityPct,
+                                  char *payloadBuffer,
+                                  size_t payloadBufferSize)
 {
     int written_chars = 0;
 
@@ -75,13 +75,14 @@ static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
 
 void MqttClientModule_InitializeNetworkStack(PubSubClient *mqttClient)
 {
-    bool has_wifi_credentials = MqttClientModule_HasWifiCredentials();
-    bool has_broker_address = MqttClientModule_HasBrokerAddress();
+    bool has_wifi_credentials = HasWifiCredentials();
+    bool has_broker_address = HasBrokerAddress();
 
     WiFi.mode(WIFI_STA);
     WiFi.setAutoReconnect(true);
     WiFi.persistent(false);
 
+    /* Configure MQTT broker address and port. */
     mqttClient->setServer(MQTT_BROKER, MQTT_PORT);
 
     if (false == has_wifi_credentials)
@@ -102,7 +103,7 @@ void MqttClientModule_ConnectWifiIfNeeded()
     const unsigned long wifi_connect_retry_interval_ms = 5000UL;
     unsigned long now_ms = millis();
     uint8_t wifi_status = WiFi.status();
-    bool has_wifi_credentials = MqttClientModule_HasWifiCredentials();
+    bool has_wifi_credentials = HasWifiCredentials();
 
     if (WL_CONNECTED == (wl_status_t)wifi_status)
     {
@@ -135,7 +136,7 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
     const unsigned long mqtt_connect_retry_interval_ms = 3000UL;
     unsigned long now_ms = millis();
     uint8_t wifi_status = WiFi.status();
-    bool has_broker_address = MqttClientModule_HasBrokerAddress();
+    bool has_broker_address = HasBrokerAddress();
 
     if (false == has_broker_address)
     {
@@ -174,7 +175,7 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
     if (true == is_connected)
     {
         Serial.println("MQTT connected");
-        MqttClientModule_PublishToTopic(mqttClient, STATUS_TOPIC, "online");
+        PublishToTopic(mqttClient, STATUS_TOPIC, "online");
     }
     else
     {
@@ -212,11 +213,12 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
         return;
     }
 
-    build_payload_success = MqttClientModule_BuildTelemetryPayload(isValid,
-                                                                   temperatureC,
-                                                                   humidityPct,
-                                                                   payload_buffer,
-                                                                   sizeof(payload_buffer));
+    /* Build JSON payload for telemetry. */
+    build_payload_success = BuildTelemetryPayload(isValid,
+                                                  temperatureC,
+                                                  humidityPct,
+                                                  payload_buffer,
+                                                  sizeof(payload_buffer));
 
     if (false == build_payload_success)
     {
@@ -225,7 +227,8 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
         return;
     }
 
-    is_published = MqttClientModule_PublishToTopic(mqttClient, TELEMETRY_TOPIC, payload_buffer);
+    /* Publish telemetry to MQTT broker. */
+    is_published = PublishToTopic(mqttClient, TELEMETRY_TOPIC, payload_buffer);
 
     /* Update publish watermark only when broker accept succeeds. */
     if (true == is_published)

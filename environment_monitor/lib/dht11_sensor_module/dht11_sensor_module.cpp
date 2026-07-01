@@ -5,6 +5,7 @@
 
 void Dht11SensorModule_InitializeDht11Sensor(DHTesp *dhtSensor)
 {
+    /* Initialize the DHT11 pin. */
     dhtSensor->setup(DHT_PIN, DHTesp::DHT11);
     Serial.println("DHT11 ready");
 }
@@ -14,12 +15,20 @@ void Dht11SensorModule_ReadDht11Sensor(DHTesp *dhtSensor,
                                        float *humidityPct,
                                        bool *isValid)
 {
-    TempAndHumidity values = dhtSensor->getTempAndHumidity();
+    *isValid = false;
+    TempAndHumidity values = {NAN, NAN};
+
+    /* Get sensor values. */
+    values = dhtSensor->getTempAndHumidity();
 
     /* DHT11 may return NaN on transient read errors. */
-    *isValid = (false == isnan(values.temperature)) &&
-               (false == isnan(values.humidity));
+    if ((false == isnan(values.temperature)) &&
+        (false == isnan(values.humidity)))
+    {
+        *isValid = true;
+    }
 
+    /* Return sensor values. */
     *temperatureC = values.temperature;
     *humidityPct = values.humidity;
 }
