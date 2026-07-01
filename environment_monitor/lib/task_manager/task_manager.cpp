@@ -27,6 +27,7 @@ static SemaphoreHandle_t shared_data_mutex = nullptr;
 
 static void CopySharedData(SharedSensorData *destination)
 {
+    /* Proceed only when the shared-data mutex is acquired. */
     if (pdTRUE == xSemaphoreTake(shared_data_mutex, portMAX_DELAY))
     {
         /* Copy a consistent snapshot while holding the shared mutex. */
@@ -37,6 +38,7 @@ static void CopySharedData(SharedSensorData *destination)
 
 static void UpdateSharedData(float temperatureC, float humidityPct, bool isValid)
 {
+    /* Update shared state atomically under mutex protection. */
     if (pdTRUE == xSemaphoreTake(shared_data_mutex, portMAX_DELAY))
     {
         shared_data.valid = isValid;
@@ -73,6 +75,7 @@ static void SensorTask(void *parameter)
 
         UpdateSharedData(temperature_c, humidity_pct, is_valid);
 
+        /* Print full telemetry only for valid sensor samples. */
         if (true == is_valid)
         {
             Serial.print("[SensorTask] T=");
@@ -118,6 +121,7 @@ static void MqttTask(void *parameter)
         MqttClientModule_ConnectWifiIfNeeded();
         MqttClientModule_ConnectMqttIfNeeded(&mqtt_client);
 
+        /* Run MQTT loop only when the client session is connected. */
         if (true == mqtt_client.connected())
         {
             /* Keep MQTT internal state machine active while connected. */
@@ -146,6 +150,7 @@ void TaskManager_SetupTaskManager()
     MqttClientModule_InitializeNetworkStack(&mqtt_client);
 
     shared_data_mutex = xSemaphoreCreateMutex();
+    /* Stop setup if mutex allocation failed to avoid data races. */
     if (nullptr == shared_data_mutex)
     {
         /* Cannot continue safely without mutual exclusion on shared data. */

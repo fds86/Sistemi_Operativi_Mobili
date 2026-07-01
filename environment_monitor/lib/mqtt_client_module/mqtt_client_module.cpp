@@ -18,6 +18,22 @@ static bool MqttClientModule_HasBrokerAddress()
     return (strlen(MQTT_BROKER) > 0U);
 }
 
+static bool MqttClientModule_PublishToTopic(PubSubClient *mqttClient,
+                                            const char *topic,
+                                            const char *payload)
+{
+    bool is_published = mqttClient->publish(topic, payload);
+
+    /* Log broker publish failures to ease runtime diagnostics. */
+    if (false == is_published)
+    {
+        Serial.print("MQTT publish failed: ");
+        Serial.println(topic);
+    }
+
+    return is_published;
+}
+
 static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
                                                    float temperatureC,
                                                    float humidityPct,
@@ -26,6 +42,7 @@ static bool MqttClientModule_BuildTelemetryPayload(bool isValid,
 {
     int written_chars = 0;
 
+    /* Build either telemetry JSON or an explicit sensor-error payload. */
     if (true == isValid)
     {
         written_chars = snprintf(payloadBuffer,
@@ -153,10 +170,11 @@ void MqttClientModule_ConnectMqttIfNeeded(PubSubClient *mqttClient)
 
     bool is_connected = mqttClient->connect(MQTT_CLIENT_ID);
 
+    /* Publish online status only after a successful MQTT connect. */
     if (true == is_connected)
     {
         Serial.println("MQTT connected");
-        mqttClient->publish(STATUS_TOPIC, "online");
+        MqttClientModule_PublishToTopic(mqttClient, STATUS_TOPIC, "online");
     }
     else
     {
@@ -207,8 +225,9 @@ void MqttClientModule_PublishTelemetryIfUpdated(PubSubClient *mqttClient,
         return;
     }
 
-    is_published = mqttClient->publish(TELEMETRY_TOPIC, payload_buffer);
+    is_published = MqttClientModule_PublishToTopic(mqttClient, TELEMETRY_TOPIC, payload_buffer);
 
+    /* Update publish watermark only when broker accept succeeds. */
     if (true == is_published)
     {
         /* Update cache to avoid republishing the same sample. */
