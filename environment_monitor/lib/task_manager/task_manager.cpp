@@ -60,6 +60,11 @@ static void ActuatorTask(void *);
  */
 static void MqttTask(void *);
 
+/**
+ * @brief Initializes peripherals, synchronization primitives, and application tasks.
+ */
+void TaskManager_SetupTaskManager();
+
 static void CopySharedData(SharedSensorData *destination)
 {
     /* Proceed only when the shared-data mutex is acquired. */

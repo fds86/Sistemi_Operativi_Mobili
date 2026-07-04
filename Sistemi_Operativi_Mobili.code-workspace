@@ -17,10 +17,6 @@
 			"path": "dht11_mqtt-esp32"
 		},
 		{
-			"name": "progetto_esame",
-			"path": "progetto_esame"
-		},
-		{
 			"name": "environment_monitor",
 			"path": "environment_monitor"
 		}

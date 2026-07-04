@@ -8,6 +8,46 @@
 static unsigned long wifi_last_connect_attempt_ms = 0UL;
 static unsigned long mqtt_last_connect_attempt_ms = 0UL;
 
+/**
+ * @brief Checks whether Wi-Fi credentials are configured.
+ * @return True when WIFI_SSID is not empty; otherwise false.
+ */
+static bool HasWifiCredentials();
+
+/**
+ * @brief Checks whether the MQTT broker address is configured.
+ * @return True when MQTT_BROKER is not empty; otherwise false.
+ */
+static bool HasBrokerAddress();
+
+/**
+ * @brief Publishes a payload to the selected MQTT topic.
+ * @param mqttClient Pointer to the initialized MQTT client.
+ * @param topic Destination MQTT topic.
+ * @param payload Null-terminated payload string.
+ * @param isRetained True to publish as retained message; otherwise false.
+ * @return True on broker acceptance; otherwise false.
+ */
+static bool PublishToTopic(PubSubClient *mqttClient,
+                           const char *topic,
+                           const char *payload,
+                           bool isRetained);
+
+/**
+ * @brief Builds the telemetry JSON payload from the latest sample.
+ * @param isValid True when sampled sensor values are valid.
+ * @param temperatureC Last sampled temperature in Celsius.
+ * @param humidityPct Last sampled relative humidity percentage.
+ * @param payloadBuffer Output buffer receiving JSON payload text.
+ * @param payloadBufferSize Size of payloadBuffer in bytes.
+ * @return True when payload is generated without truncation; otherwise false.
+ */
+static bool BuildTelemetryPayload(bool isValid,
+                                  float temperatureC,
+                                  float humidityPct,
+                                  char *payloadBuffer,
+                                  size_t payloadBufferSize);
+
 static bool HasWifiCredentials()
 {
     return (strlen(WIFI_SSID) > 0U);
