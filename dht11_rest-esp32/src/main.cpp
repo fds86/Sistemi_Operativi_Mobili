@@ -9,6 +9,16 @@ static Dht11Data sensorData = {false, NAN, NAN, 0, 0};
 static unsigned long lastPrintedTs = 0;
 static bool lastValidity = false;
 
+/**
+ * @brief Initializes serial output, DHT11 sensor, and REST endpoint.
+ */
+void setup();
+
+/**
+ * @brief Updates sensor state, serves REST requests, and logs data changes.
+ */
+void loop();
+
 void setup()
 {
     Serial.begin(9600);

@@ -11,6 +11,13 @@ Mpu6050 mpu;
 /**
  * @brief Initialize serial output and configure the MPU6050 sensor.
  */
+void setup();
+
+/**
+ * @brief Read sensor values and print acceleration, gyroscope, and temperature.
+ */
+void loop();
+
 void setup() 
 {
     Serial.begin(9600);
@@ -19,9 +26,6 @@ void setup()
     setGyroRange(&mpu, GYRO_250DPS);
 }
 
-/**
- * @brief Read sensor values and print acceleration, gyroscope, and temperature.
- */
 void loop()
 {
     /* Read raw data from MPU6050 */

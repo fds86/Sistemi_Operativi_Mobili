@@ -7,6 +7,16 @@ DHTesp dht;
 static Dht11Data sensorData = {false, NAN, NAN, 0};
 static unsigned long lastPrintedTs = 0;
 
+/**
+ * @brief Initializes serial output and DHT11 sensor setup.
+ */
+void setup();
+
+/**
+ * @brief Reads DHT11 samples and prints updated valid measurements.
+ */
+void loop();
+
 void setup()
 {
     Serial.begin(9600);
