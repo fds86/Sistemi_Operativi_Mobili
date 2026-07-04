@@ -1,0 +1,125 @@
+\doxysection{C:\+/\+\+Users/\+franc/\+\+Git\+Hub/\+\+Repositories/\+\+Sistemi\+\_\+\+Operativi\+\_\+\+Mobili/\+environment\+\_\+monitor/\+include/\+project\+\_\+config.h File Reference}
+\hypertarget{project__config_8h}{}\label{project__config_8h}\index{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/include/project\_config.h@{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/include/project\_config.h}}
+
+
+Shared project configuration macros for ESP32, sensor timing, and MQTT.  
+
+
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a661d236dd49f3aef3a2cf46cf6a1405e}{DHT\+\_\+\+PIN}}~18U
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_ab4553be4db9860d940f81d7447173b2f}{LED\+\_\+\+PIN}}~2U
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a8821c208bcb5266f0d745d70b5bb57e8}{SENSOR\+\_\+\+PERIOD\+\_\+\+MS}}~2000U
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a6e304628f597efcb0eeffe2a122c782c}{TEMPERATURE\+\_\+\+THRESHOLD\+\_\+C}}~30.\+0F
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a6470132377ff1685e4d67b8ebb0952ca}{CONTROL\+\_\+\+PERIOD\+\_\+\+MS}}~500U
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a586542b79d00e4db7e1d5a667ae83a2b}{WIFI\+\_\+\+SSID}}~"{}TP-\/Link\+\_\+\+Novello"{} /\+\texorpdfstring{$\ast$}{*} "{}SSID\+\_\+\+XXX"{} \texorpdfstring{$\ast$}{*}/\+
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a8685d8aff7e570048090a3a51afceb07}{WIFI\+\_\+\+PASSWORD}}~"{}16417595"{} /\+\texorpdfstring{$\ast$}{*} "{}PASSWORD\+\_\+\+XXX"{} \texorpdfstring{$\ast$}{*}/\+
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a03acf61c3de2517e471494cea2f44755}{MQTT\+\_\+\+BROKER}}~"{}broker.\+hivemq.\+com"{}
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_aa8632baff6bbb5004385998918f1e6bd}{MQTT\+\_\+\+PORT}}~1883U
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a87467ea560dbba1fe10d066adb9f4a11}{MQTT\+\_\+\+CLIENT\+\_\+\+ID}}~"{}esp32-\/ambient-\/monitor"{}
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a8a89e64b6099bf99f8716d02afe72306}{TELEMETRY\+\_\+\+TOPIC}}~"{}sistemi\+\_\+operativi\+\_\+mobili/\+environment\+\_\+monitor/\+telemetry"{}
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_aafaabf83b6be8e3494e3d2a6bdcac18e}{STATUS\+\_\+\+TOPIC}}~"{}sistemi\+\_\+operativi\+\_\+mobili/\+environment\+\_\+monitor/\+status"{}
+\item 
+\+\#define \doxymbox{\hyperlink{project__config_8h_a31f043b885532250ad72b19ce74c4f0d}{MQTT\+\_\+\+PERIOD\+\_\+\+MS}}~1000U
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shared project configuration macros for ESP32, sensor timing, and MQTT. 
+
+
+
+\label{project__config_8h_doc-define-members}
+\Hypertarget{project__config_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{project__config_8h_a6470132377ff1685e4d67b8ebb0952ca}\index{project\_config.h@{project\_config.h}!CONTROL\_PERIOD\_MS@{CONTROL\_PERIOD\_MS}}
+\index{CONTROL\_PERIOD\_MS@{CONTROL\_PERIOD\_MS}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{CONTROL\_PERIOD\_MS}{CONTROL\_PERIOD\_MS}}
+{\footnotesize\ttfamily \label{project__config_8h_a6470132377ff1685e4d67b8ebb0952ca} 
+\+\#define CONTROL\+\_\+\+PERIOD\+\_\+\+MS~500U}
+
+Actuator control period in milliseconds. \Hypertarget{project__config_8h_a661d236dd49f3aef3a2cf46cf6a1405e}\index{project\_config.h@{project\_config.h}!DHT\_PIN@{DHT\_PIN}}
+\index{DHT\_PIN@{DHT\_PIN}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{DHT\_PIN}{DHT\_PIN}}
+{\footnotesize\ttfamily \label{project__config_8h_a661d236dd49f3aef3a2cf46cf6a1405e} 
+\+\#define DHT\+\_\+\+PIN~18U}
+
+GPIO used by the DHT11 data line. \Hypertarget{project__config_8h_ab4553be4db9860d940f81d7447173b2f}\index{project\_config.h@{project\_config.h}!LED\_PIN@{LED\_PIN}}
+\index{LED\_PIN@{LED\_PIN}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{LED\_PIN}{LED\_PIN}}
+{\footnotesize\ttfamily \label{project__config_8h_ab4553be4db9860d940f81d7447173b2f} 
+\+\#define LED\+\_\+\+PIN~2U}
+
+GPIO used as actuator output (LED). \Hypertarget{project__config_8h_a03acf61c3de2517e471494cea2f44755}\index{project\_config.h@{project\_config.h}!MQTT\_BROKER@{MQTT\_BROKER}}
+\index{MQTT\_BROKER@{MQTT\_BROKER}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{MQTT\_BROKER}{MQTT\_BROKER}}
+{\footnotesize\ttfamily \label{project__config_8h_a03acf61c3de2517e471494cea2f44755} 
+\+\#define MQTT\+\_\+\+BROKER~"{}broker.\+hivemq.\+com"{}}
+
+MQTT broker hostname. \Hypertarget{project__config_8h_a87467ea560dbba1fe10d066adb9f4a11}\index{project\_config.h@{project\_config.h}!MQTT\_CLIENT\_ID@{MQTT\_CLIENT\_ID}}
+\index{MQTT\_CLIENT\_ID@{MQTT\_CLIENT\_ID}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{MQTT\_CLIENT\_ID}{MQTT\_CLIENT\_ID}}
+{\footnotesize\ttfamily \label{project__config_8h_a87467ea560dbba1fe10d066adb9f4a11} 
+\+\#define MQTT\+\_\+\+CLIENT\+\_\+\+ID~"{}esp32-\/ambient-\/monitor"{}}
+
+Client identifier used by ESP32 on broker connection. \Hypertarget{project__config_8h_a31f043b885532250ad72b19ce74c4f0d}\index{project\_config.h@{project\_config.h}!MQTT\_PERIOD\_MS@{MQTT\_PERIOD\_MS}}
+\index{MQTT\_PERIOD\_MS@{MQTT\_PERIOD\_MS}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{MQTT\_PERIOD\_MS}{MQTT\_PERIOD\_MS}}
+{\footnotesize\ttfamily \label{project__config_8h_a31f043b885532250ad72b19ce74c4f0d} 
+\+\#define MQTT\+\_\+\+PERIOD\+\_\+\+MS~1000U}
+
+MQTT handling period in milliseconds. \Hypertarget{project__config_8h_aa8632baff6bbb5004385998918f1e6bd}\index{project\_config.h@{project\_config.h}!MQTT\_PORT@{MQTT\_PORT}}
+\index{MQTT\_PORT@{MQTT\_PORT}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{MQTT\_PORT}{MQTT\_PORT}}
+{\footnotesize\ttfamily \label{project__config_8h_aa8632baff6bbb5004385998918f1e6bd} 
+\+\#define MQTT\+\_\+\+PORT~1883U}
+
+MQTT broker port. \Hypertarget{project__config_8h_a8821c208bcb5266f0d745d70b5bb57e8}\index{project\_config.h@{project\_config.h}!SENSOR\_PERIOD\_MS@{SENSOR\_PERIOD\_MS}}
+\index{SENSOR\_PERIOD\_MS@{SENSOR\_PERIOD\_MS}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{SENSOR\_PERIOD\_MS}{SENSOR\_PERIOD\_MS}}
+{\footnotesize\ttfamily \label{project__config_8h_a8821c208bcb5266f0d745d70b5bb57e8} 
+\+\#define SENSOR\+\_\+\+PERIOD\+\_\+\+MS~2000U}
+
+Sensor acquisition period in milliseconds. \Hypertarget{project__config_8h_aafaabf83b6be8e3494e3d2a6bdcac18e}\index{project\_config.h@{project\_config.h}!STATUS\_TOPIC@{STATUS\_TOPIC}}
+\index{STATUS\_TOPIC@{STATUS\_TOPIC}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{STATUS\_TOPIC}{STATUS\_TOPIC}}
+{\footnotesize\ttfamily \label{project__config_8h_aafaabf83b6be8e3494e3d2a6bdcac18e} 
+\+\#define STATUS\+\_\+\+TOPIC~"{}sistemi\+\_\+operativi\+\_\+mobili/\+environment\+\_\+monitor/\+status"{}}
+
+Topic used to publish connection status messages. \Hypertarget{project__config_8h_a8a89e64b6099bf99f8716d02afe72306}\index{project\_config.h@{project\_config.h}!TELEMETRY\_TOPIC@{TELEMETRY\_TOPIC}}
+\index{TELEMETRY\_TOPIC@{TELEMETRY\_TOPIC}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{TELEMETRY\_TOPIC}{TELEMETRY\_TOPIC}}
+{\footnotesize\ttfamily \label{project__config_8h_a8a89e64b6099bf99f8716d02afe72306} 
+\+\#define TELEMETRY\+\_\+\+TOPIC~"{}sistemi\+\_\+operativi\+\_\+mobili/\+environment\+\_\+monitor/\+telemetry"{}}
+
+Topic used to publish sensor telemetry. \Hypertarget{project__config_8h_a6e304628f597efcb0eeffe2a122c782c}\index{project\_config.h@{project\_config.h}!TEMPERATURE\_THRESHOLD\_C@{TEMPERATURE\_THRESHOLD\_C}}
+\index{TEMPERATURE\_THRESHOLD\_C@{TEMPERATURE\_THRESHOLD\_C}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{TEMPERATURE\_THRESHOLD\_C}{TEMPERATURE\_THRESHOLD\_C}}
+{\footnotesize\ttfamily \label{project__config_8h_a6e304628f597efcb0eeffe2a122c782c} 
+\+\#define TEMPERATURE\+\_\+\+THRESHOLD\+\_\+C~30.\+0F}
+
+Temperature threshold used to activate the LED actuator. \Hypertarget{project__config_8h_a8685d8aff7e570048090a3a51afceb07}\index{project\_config.h@{project\_config.h}!WIFI\_PASSWORD@{WIFI\_PASSWORD}}
+\index{WIFI\_PASSWORD@{WIFI\_PASSWORD}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{WIFI\_PASSWORD}{WIFI\_PASSWORD}}
+{\footnotesize\ttfamily \label{project__config_8h_a8685d8aff7e570048090a3a51afceb07} 
+\+\#define WIFI\+\_\+\+PASSWORD~"{}16417595"{} /\+\texorpdfstring{$\ast$}{*} "{}PASSWORD\+\_\+\+XXX"{} \texorpdfstring{$\ast$}{*}/\+}
+
+Wi-\/\+Fi password for station mode connection. \Hypertarget{project__config_8h_a586542b79d00e4db7e1d5a667ae83a2b}\index{project\_config.h@{project\_config.h}!WIFI\_SSID@{WIFI\_SSID}}
+\index{WIFI\_SSID@{WIFI\_SSID}!project\_config.h@{project\_config.h}}
+\doxysubsubsection{\texorpdfstring{WIFI\_SSID}{WIFI\_SSID}}
+{\footnotesize\ttfamily \label{project__config_8h_a586542b79d00e4db7e1d5a667ae83a2b} 
+\+\#define WIFI\+\_\+\+SSID~"{}TP-\/Link\+\_\+\+Novello"{} /\+\texorpdfstring{$\ast$}{*} "{}SSID\+\_\+\+XXX"{} \texorpdfstring{$\ast$}{*}/\+}
+
+Wi-\/\+Fi SSID for station mode connection. 

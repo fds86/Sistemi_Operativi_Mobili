@@ -2,6 +2,11 @@
 #include "task_manager.h"
 
 /**
+ * @file main.cpp
+ * @brief Entry point for Environment Monitor firmware.
+ */
+
+/**
  * @brief Initializes serial output and starts the task manager.
  */
 void setup();

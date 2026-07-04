@@ -1,0 +1,62 @@
+\doxysection{C:\+/\+\+Users/\+franc/\+\+Git\+Hub/\+\+Repositories/\+\+Sistemi\+\_\+\+Operativi\+\_\+\+Mobili/\+environment\+\_\+monitor/\+lib/\+dht11\+\_\+sensor\+\_\+module/\+dht11\+\_\+sensor\+\_\+module.h File Reference}
+\hypertarget{dht11__sensor__module_8h}{}\label{dht11__sensor__module_8h}\index{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/dht11\_sensor\_module/dht11\_sensor\_module.h@{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/dht11\_sensor\_module/dht11\_sensor\_module.h}}
+
+
+DHT11 acquisition module API.  
+
+
+{\ttfamily \+\#include $<$DHTesp.\+h$>$}\newline
+{\ttfamily \+\#include "{}project\+\_\+config.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{dht11__sensor__module_8h_a1f12a1aa1040ed3ab0fa79a7fcfaab36}{Dht11\+Sensor\+Module\+\_\+\+Initialize\+Dht11\+Sensor}} (DHTesp \texorpdfstring{$\ast$}{*}dht\+Sensor)
+\begin{DoxyCompactList}\small\item\em Configures the DHT11 driver on the configured GPIO. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{dht11__sensor__module_8h_a2936e440dceeed7db1fc3ab26655a596}{Dht11\+Sensor\+Module\+\_\+\+Read\+Dht11\+Sensor}} (DHTesp \texorpdfstring{$\ast$}{*}dht\+Sensor, float \texorpdfstring{$\ast$}{*}temperatureC, float \texorpdfstring{$\ast$}{*}humidity\+Pct, bool \texorpdfstring{$\ast$}{*}is\+Valid)
+\begin{DoxyCompactList}\small\item\em Reads DHT11 values and updates output parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+DHT11 acquisition module API. 
+
+
+
+\label{dht11__sensor__module_8h_doc-func-members}
+\Hypertarget{dht11__sensor__module_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{dht11__sensor__module_8h_a1f12a1aa1040ed3ab0fa79a7fcfaab36}\index{dht11\_sensor\_module.h@{dht11\_sensor\_module.h}!Dht11SensorModule\_InitializeDht11Sensor@{Dht11SensorModule\_InitializeDht11Sensor}}
+\index{Dht11SensorModule\_InitializeDht11Sensor@{Dht11SensorModule\_InitializeDht11Sensor}!dht11\_sensor\_module.h@{dht11\_sensor\_module.h}}
+\doxysubsubsection{\texorpdfstring{Dht11SensorModule\_InitializeDht11Sensor()}{Dht11SensorModule\_InitializeDht11Sensor()}}
+{\footnotesize\ttfamily \label{dht11__sensor__module_8h_a1f12a1aa1040ed3ab0fa79a7fcfaab36} 
+void Dht11\+Sensor\+Module\+\_\+\+Initialize\+Dht11\+Sensor (\begin{DoxyParamCaption}\item[{DHTesp \texorpdfstring{$\ast$}{*}}]{dht\+Sensor}{}\end{DoxyParamCaption})}
+
+
+
+Configures the DHT11 driver on the configured GPIO. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dht\+Sensor} & Pointer to the DHTesp instance used by the caller. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{dht11__sensor__module_8h_a2936e440dceeed7db1fc3ab26655a596}\index{dht11\_sensor\_module.h@{dht11\_sensor\_module.h}!Dht11SensorModule\_ReadDht11Sensor@{Dht11SensorModule\_ReadDht11Sensor}}
+\index{Dht11SensorModule\_ReadDht11Sensor@{Dht11SensorModule\_ReadDht11Sensor}!dht11\_sensor\_module.h@{dht11\_sensor\_module.h}}
+\doxysubsubsection{\texorpdfstring{Dht11SensorModule\_ReadDht11Sensor()}{Dht11SensorModule\_ReadDht11Sensor()}}
+{\footnotesize\ttfamily \label{dht11__sensor__module_8h_a2936e440dceeed7db1fc3ab26655a596} 
+void Dht11\+Sensor\+Module\+\_\+\+Read\+Dht11\+Sensor (\begin{DoxyParamCaption}\item[{DHTesp \texorpdfstring{$\ast$}{*}}]{dht\+Sensor}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{temperatureC}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{humidity\+Pct}{, }\item[{bool \texorpdfstring{$\ast$}{*}}]{is\+Valid}{}\end{DoxyParamCaption})}
+
+
+
+Reads DHT11 values and updates output parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dht\+Sensor} & Pointer to the DHTesp instance used by the caller. \\
+\hline
+{\em temperatureC} & Pointer to output temperature in Celsius. \\
+\hline
+{\em humidity\+Pct} & Pointer to output humidity percentage. \\
+\hline
+{\em is\+Valid} & Pointer to output validity flag. \\
+\hline
+\end{DoxyParams}

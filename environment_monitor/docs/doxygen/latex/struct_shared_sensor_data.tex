@@ -1,0 +1,63 @@
+\doxysection{Shared\+Sensor\+Data Struct Reference}
+\hypertarget{struct_shared_sensor_data}{}\label{struct_shared_sensor_data}\index{SharedSensorData@{SharedSensorData}}
+
+
+Shared sensor data exchanged across Free\+RTOS tasks.  
+
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \doxymbox{\hyperlink{struct_shared_sensor_data_a8a0e131239f3e14663d1498f59b3f4bf}{valid}}
+\item 
+float \doxymbox{\hyperlink{struct_shared_sensor_data_ac9025731b7b6d24f678e11bb0f1762c5}{temperatureC}}
+\item 
+float \doxymbox{\hyperlink{struct_shared_sensor_data_a45f4442583198ce89f70c10774cb7deb}{humidity\+Pct}}
+\item 
+unsigned long \doxymbox{\hyperlink{struct_shared_sensor_data_a6efffdcec511044ce833f5b175d6e00e}{timestamp\+Ms}}
+\item 
+bool \doxymbox{\hyperlink{struct_shared_sensor_data_a57feedc5472daeddd1d35d77493ff996}{alarm\+On}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shared sensor data exchanged across Free\+RTOS tasks. 
+
+\label{struct_shared_sensor_data_doc-variable-members}
+\Hypertarget{struct_shared_sensor_data_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_shared_sensor_data_a57feedc5472daeddd1d35d77493ff996}\index{SharedSensorData@{SharedSensorData}!alarmOn@{alarmOn}}
+\index{alarmOn@{alarmOn}!SharedSensorData@{SharedSensorData}}
+\doxysubsubsection{\texorpdfstring{alarmOn}{alarmOn}}
+{\footnotesize\ttfamily \label{struct_shared_sensor_data_a57feedc5472daeddd1d35d77493ff996} 
+bool Shared\+Sensor\+Data::\+alarm\+On}
+
+Actuator state derived from threshold control logic. \Hypertarget{struct_shared_sensor_data_a45f4442583198ce89f70c10774cb7deb}\index{SharedSensorData@{SharedSensorData}!humidityPct@{humidityPct}}
+\index{humidityPct@{humidityPct}!SharedSensorData@{SharedSensorData}}
+\doxysubsubsection{\texorpdfstring{humidityPct}{humidityPct}}
+{\footnotesize\ttfamily \label{struct_shared_sensor_data_a45f4442583198ce89f70c10774cb7deb} 
+float Shared\+Sensor\+Data::\+humidity\+Pct}
+
+Last sampled relative humidity percentage. \Hypertarget{struct_shared_sensor_data_ac9025731b7b6d24f678e11bb0f1762c5}\index{SharedSensorData@{SharedSensorData}!temperatureC@{temperatureC}}
+\index{temperatureC@{temperatureC}!SharedSensorData@{SharedSensorData}}
+\doxysubsubsection{\texorpdfstring{temperatureC}{temperatureC}}
+{\footnotesize\ttfamily \label{struct_shared_sensor_data_ac9025731b7b6d24f678e11bb0f1762c5} 
+float Shared\+Sensor\+Data::\+temperatureC}
+
+Last sampled temperature in Celsius. \Hypertarget{struct_shared_sensor_data_a6efffdcec511044ce833f5b175d6e00e}\index{SharedSensorData@{SharedSensorData}!timestampMs@{timestampMs}}
+\index{timestampMs@{timestampMs}!SharedSensorData@{SharedSensorData}}
+\doxysubsubsection{\texorpdfstring{timestampMs}{timestampMs}}
+{\footnotesize\ttfamily \label{struct_shared_sensor_data_a6efffdcec511044ce833f5b175d6e00e} 
+unsigned long Shared\+Sensor\+Data::\+timestamp\+Ms}
+
+Timestamp in milliseconds of the last sample update. \Hypertarget{struct_shared_sensor_data_a8a0e131239f3e14663d1498f59b3f4bf}\index{SharedSensorData@{SharedSensorData}!valid@{valid}}
+\index{valid@{valid}!SharedSensorData@{SharedSensorData}}
+\doxysubsubsection{\texorpdfstring{valid}{valid}}
+{\footnotesize\ttfamily \label{struct_shared_sensor_data_a8a0e131239f3e14663d1498f59b3f4bf} 
+bool Shared\+Sensor\+Data::\+valid}
+
+True when the sampled sensor data is valid. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+C:\+/\+\+Users/\+franc/\+\+Git\+Hub/\+\+Repositories/\+\+Sistemi\+\_\+\+Operativi\+\_\+\+Mobili/\+environment\+\_\+monitor/\+lib/\+task\+\_\+manager/\+task\+\_\+manager.\+cpp\end{DoxyCompactItemize}

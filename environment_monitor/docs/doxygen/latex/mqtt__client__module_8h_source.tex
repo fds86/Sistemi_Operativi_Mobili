@@ -1,0 +1,29 @@
+\doxysection{mqtt\+\_\+client\+\_\+module.\+h}
+\hypertarget{mqtt__client__module_8h_source}{}\label{mqtt__client__module_8h_source}\index{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/mqtt\_client\_module/mqtt\_client\_module.h@{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/mqtt\_client\_module/mqtt\_client\_module.h}}
+\doxymbox{\hyperlink{mqtt__client__module_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ MQTT\_CLIENT\_MODULE\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ MQTT\_CLIENT\_MODULE\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <WiFi.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <PubSubClient.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{project__config_8h}{project\_config.h}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00018\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{mqtt__client__module_8h_a02ebadf27bcbedce4f7e2a258c60ace3}{MqttClientModule\_InitializeNetworkStack}}(PubSubClient\ *mqttClient);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{mqtt__client__module_8h_aa5695ffd91e2c52562cc1a5ef181d6d6}{MqttClientModule\_ConnectWifiIfNeeded}}();}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{mqtt__client__module_8h_a8028fcbbc64710cddbc3e44d6a72f8bc}{MqttClientModule\_ConnectMqttIfNeeded}}(PubSubClient\ *mqttClient);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00040\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{mqtt__client__module_8h_a49edf455b6041099f232da28fd32d609}{MqttClientModule\_PublishTelemetryIfUpdated}}(PubSubClient\ *mqttClient,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isValid,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ temperatureC,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ humidityPct,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ timestampMs,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ *lastPublishedTimestampMs);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

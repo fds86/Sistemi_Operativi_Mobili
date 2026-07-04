@@ -1,0 +1,88 @@
+\doxysection{C:\+/\+\+Users/\+franc/\+\+Git\+Hub/\+\+Repositories/\+\+Sistemi\+\_\+\+Operativi\+\_\+\+Mobili/\+environment\+\_\+monitor/\+lib/\+mqtt\+\_\+client\+\_\+module/\+mqtt\+\_\+client\+\_\+module.h File Reference}
+\hypertarget{mqtt__client__module_8h}{}\label{mqtt__client__module_8h}\index{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/mqtt\_client\_module/mqtt\_client\_module.h@{C:/Users/franc/GitHub/Repositories/Sistemi\_Operativi\_Mobili/environment\_monitor/lib/mqtt\_client\_module/mqtt\_client\_module.h}}
+
+
+MQTT connectivity and telemetry publish API.  
+
+
+{\ttfamily \+\#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \+\#include $<$Wi\+Fi.\+h$>$}\newline
+{\ttfamily \+\#include $<$Pub\+Sub\+Client.\+h$>$}\newline
+{\ttfamily \+\#include "{}project\+\_\+config.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{mqtt__client__module_8h_a02ebadf27bcbedce4f7e2a258c60ace3}{Mqtt\+Client\+Module\+\_\+\+Initialize\+Network\+Stack}} (Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}mqtt\+Client)
+\begin{DoxyCompactList}\small\item\em Initializes Wi-\/\+Fi mode and broker server configuration. \end{DoxyCompactList}\item 
+\Hypertarget{mqtt__client__module_8h_aa5695ffd91e2c52562cc1a5ef181d6d6}\label{mqtt__client__module_8h_aa5695ffd91e2c52562cc1a5ef181d6d6} 
+void {\bfseries Mqtt\+Client\+Module\+\_\+\+Connect\+Wifi\+If\+Needed} ()
+\begin{DoxyCompactList}\small\item\em Starts Wi-\/\+Fi connection if not connected and credentials are set. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{mqtt__client__module_8h_a8028fcbbc64710cddbc3e44d6a72f8bc}{Mqtt\+Client\+Module\+\_\+\+Connect\+Mqtt\+If\+Needed}} (Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}mqtt\+Client)
+\begin{DoxyCompactList}\small\item\em Connects to MQTT broker when Wi-\/\+Fi is available. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{mqtt__client__module_8h_a49edf455b6041099f232da28fd32d609}{Mqtt\+Client\+Module\+\_\+\+Publish\+Telemetry\+If\+Updated}} (Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}mqtt\+Client, bool is\+Valid, float temperatureC, float humidity\+Pct, unsigned long timestamp\+Ms, unsigned long \texorpdfstring{$\ast$}{*}last\+Published\+Timestamp\+Ms)
+\begin{DoxyCompactList}\small\item\em Publishes telemetry only when new sensor data is available. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+MQTT connectivity and telemetry publish API. 
+
+
+
+\label{mqtt__client__module_8h_doc-func-members}
+\Hypertarget{mqtt__client__module_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{mqtt__client__module_8h_a8028fcbbc64710cddbc3e44d6a72f8bc}\index{mqtt\_client\_module.h@{mqtt\_client\_module.h}!MqttClientModule\_ConnectMqttIfNeeded@{MqttClientModule\_ConnectMqttIfNeeded}}
+\index{MqttClientModule\_ConnectMqttIfNeeded@{MqttClientModule\_ConnectMqttIfNeeded}!mqtt\_client\_module.h@{mqtt\_client\_module.h}}
+\doxysubsubsection{\texorpdfstring{MqttClientModule\_ConnectMqttIfNeeded()}{MqttClientModule\_ConnectMqttIfNeeded()}}
+{\footnotesize\ttfamily \label{mqtt__client__module_8h_a8028fcbbc64710cddbc3e44d6a72f8bc} 
+void Mqtt\+Client\+Module\+\_\+\+Connect\+Mqtt\+If\+Needed (\begin{DoxyParamCaption}\item[{Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}}]{mqtt\+Client}{}\end{DoxyParamCaption})}
+
+
+
+Connects to MQTT broker when Wi-\/\+Fi is available. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mqtt\+Client} & Pointer to the Pub\+Sub\+Client instance. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{mqtt__client__module_8h_a02ebadf27bcbedce4f7e2a258c60ace3}\index{mqtt\_client\_module.h@{mqtt\_client\_module.h}!MqttClientModule\_InitializeNetworkStack@{MqttClientModule\_InitializeNetworkStack}}
+\index{MqttClientModule\_InitializeNetworkStack@{MqttClientModule\_InitializeNetworkStack}!mqtt\_client\_module.h@{mqtt\_client\_module.h}}
+\doxysubsubsection{\texorpdfstring{MqttClientModule\_InitializeNetworkStack()}{MqttClientModule\_InitializeNetworkStack()}}
+{\footnotesize\ttfamily \label{mqtt__client__module_8h_a02ebadf27bcbedce4f7e2a258c60ace3} 
+void Mqtt\+Client\+Module\+\_\+\+Initialize\+Network\+Stack (\begin{DoxyParamCaption}\item[{Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}}]{mqtt\+Client}{}\end{DoxyParamCaption})}
+
+
+
+Initializes Wi-\/\+Fi mode and broker server configuration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mqtt\+Client} & Pointer to the Pub\+Sub\+Client instance. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{mqtt__client__module_8h_a49edf455b6041099f232da28fd32d609}\index{mqtt\_client\_module.h@{mqtt\_client\_module.h}!MqttClientModule\_PublishTelemetryIfUpdated@{MqttClientModule\_PublishTelemetryIfUpdated}}
+\index{MqttClientModule\_PublishTelemetryIfUpdated@{MqttClientModule\_PublishTelemetryIfUpdated}!mqtt\_client\_module.h@{mqtt\_client\_module.h}}
+\doxysubsubsection{\texorpdfstring{MqttClientModule\_PublishTelemetryIfUpdated()}{MqttClientModule\_PublishTelemetryIfUpdated()}}
+{\footnotesize\ttfamily \label{mqtt__client__module_8h_a49edf455b6041099f232da28fd32d609} 
+void Mqtt\+Client\+Module\+\_\+\+Publish\+Telemetry\+If\+Updated (\begin{DoxyParamCaption}\item[{Pub\+Sub\+Client \texorpdfstring{$\ast$}{*}}]{mqtt\+Client}{, }\item[{bool}]{is\+Valid}{, }\item[{float}]{temperatureC}{, }\item[{float}]{humidity\+Pct}{, }\item[{unsigned long}]{timestamp\+Ms}{, }\item[{unsigned long \texorpdfstring{$\ast$}{*}}]{last\+Published\+Timestamp\+Ms}{}\end{DoxyParamCaption})}
+
+
+
+Publishes telemetry only when new sensor data is available. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mqtt\+Client} & Pointer to the Pub\+Sub\+Client instance. \\
+\hline
+{\em is\+Valid} & True if sensor reading is valid. \\
+\hline
+{\em temperatureC} & Current temperature in Celsius. \\
+\hline
+{\em humidity\+Pct} & Current humidity percentage. \\
+\hline
+{\em timestamp\+Ms} & Timestamp associated with current reading. \\
+\hline
+{\em last\+Published\+Timestamp\+Ms} & Pointer to last published timestamp cache. \\
+\hline
+\end{DoxyParams}
