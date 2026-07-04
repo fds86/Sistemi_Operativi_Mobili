@@ -66,17 +66,28 @@ Il progetto è organizzato in moduli riutilizzabili:
 
 ```
 environment_monitor/
+├── platformio.ini               # Configurazione build PlatformIO
 ├── include/
-│   └── project_config.h          # Configurazione centralizzata (pin, periodi, MQTT)
+│   ├── project_config.h          # Configurazione centralizzata (pin, periodi, MQTT)
+│   └── README
 ├── src/
 │   └── main.cpp                  # Entry point Arduino (sketch)
 ├── lib/
 │   ├── dht11_sensor_module/      # Driver acquisizione DHT11
 │   ├── mqtt_client_module/       # Client MQTT con PubSubClient
 │   ├── task_manager/             # Orchestrazione task FreeRTOS
-│   └── [altre dipendenze]
-└── docs/
-    └── freertos_task_manager.md  # Documentazione architettura task
+│   └── README
+├── docs/
+│   ├── freertos_task_manager.md  # Documentazione architettura task
+│   ├── node_red_flow.json        # Flow Node-RED
+│   ├── node_red_setup.md         # Setup dashboard Node-RED
+│   ├── doxygen/                  # Configurazione/documentazione Doxygen
+│   └── report/
+│       ├── report.md             # Sorgente report
+│       ├── report.docx           # Export Word
+│       └── images/               # Immagini del report
+├── html/                         # Output HTML generato da Doxygen
+└── latex/                        # Output LaTeX generato da Doxygen
 ```
 
 ### Moduli principali
@@ -224,7 +235,7 @@ Il progetto **environment_monitor** mostra l'integrazione di:
 1. **Firmware embedded** robusto e modulare su ESP32
 2. **Concorrenza controllata** via FreeRTOS con pattern mutex
 3. **IoT end-to-end**: sensore → MQTT broker → visualizzazione
-4. **Protocollo MQTT** production-ready con QoS e LWT
+4. **Protocollo MQTT** pronto all'uso con QoS
 5. **Visualizzazione remota** tramite Node-RED
 
 ### Competenze acquisite
