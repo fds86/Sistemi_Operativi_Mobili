@@ -18,8 +18,8 @@
 #define CONTROL_PERIOD_MS 500U /**< Actuator control period in milliseconds. */
 
 /* Wi-Fi configuration */
-#define WIFI_SSID "TP-Link_Novello" /* "SSID_XXX" */ /**< Wi-Fi SSID for station mode connection. */
-#define WIFI_PASSWORD "16417595" /* "PASSWORD_XXX" */ /**< Wi-Fi password for station mode connection. */
+#define WIFI_SSID "SSID_XXX" /**< Wi-Fi SSID for station mode connection. */
+#define WIFI_PASSWORD "PASSWORD_XXX" /**< Wi-Fi password for station mode connection. */
 
 /* MQTT configuration */
 #define MQTT_BROKER "broker.hivemq.com" /**< MQTT broker hostname. */
